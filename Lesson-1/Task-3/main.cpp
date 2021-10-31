@@ -4,11 +4,7 @@ using namespace std;
 
 int main()
 {
-    int a, b;
-    cout << "a = ";
-    cin >> a;
-    cout << "b = ";
-    cin >> b;
+    int a = 50, b = 20;
     b = a + b;
     a = b - a;
     b = b - a;
