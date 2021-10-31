@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
 /*****************************************************************************************************************/
-    int bank_cash[10], hard_cash[10], pincod[10], acc, save_value, action;
+    int bank_cash[10], hard_cash[10], pincod[10], acc, value;
     for (int i = 0; i < 10; i++) {                                          //index loop iteration
         bank_cash[i] = rand();                                              //set value for bank cash
         hard_cash[i] = rand();                                              //set value for hard cash
@@ -24,11 +24,11 @@ int main()
             if (acc > 0 && acc <= 10) {                                     //check: does the account exist
                 do {                                                        //pincod cycle
                     cout << "PIN for " << acc << " account: ";
-                    cin >> save_value;
-                    if (save_value != pincod[acc-1]) {                      //case: incorrect password
+                    cin >> value;
+                    if (value != pincod[acc-1]) {                           //case: incorrect password
                         cout << "Your password is incorrect!" << endl;
                     }
-                } while (save_value != pincod[acc-1]);
+                } while (value != pincod[acc-1]);
                 break;                                                      //exit the cycle password is correct
             }
             else
@@ -42,14 +42,14 @@ int main()
             cout << "1 - add money"         << endl;
             cout << "2 - withdraw money"    << endl;
 
-            cin >> action;                                                  //read action (1 or 2)
+            cin >> value;                                                   //read action (1 or 2)
             /*===================================================================================================*/
-            if (action == 1) {                                              ///action 1 - add money
+            if (value == 1) {                                               ///action 1 - add money
                 cout << "How much money to add to your account?: ";
-                cin >> save_value;                                          //read action for add
-                if (save_value >= 0 && save_value <= hard_cash[acc-1]) {    //check: is there enough hard cash
-                    hard_cash[acc-1] -= save_value;                         //hard cash decrease
-                    bank_cash[acc-1] += save_value;                         //bank cash increase
+                cin >> value;                                               //read action for add
+                if (value >= 0 && value <= hard_cash[acc-1]) {              //check: is there enough hard cash
+                    hard_cash[acc-1] -= value;                              //hard cash decrease
+                    bank_cash[acc-1] += value;                              //bank cash increase
                     cout << "Transaction successful!";
                     getchar(); getchar();
                     break;
@@ -58,12 +58,12 @@ int main()
                     cout << "You don't have so much money" << endl;
             }
             /*===================================================================================================*/
-            else if (action == 2) {                                         ///action 2 - withdraw money
+            else if (value == 2) {                                          ///action 2 - withdraw money
                 cout << "How much money to withdraw?: ";
-                cin >> save_value;                                          //read action for divide
-                if (save_value >= 0 && save_value <= bank_cash[acc-1]) {    //check: is there enough bank cash
-                    bank_cash[acc-1] -= save_value;                         //bank cash decrease
-                    hard_cash[acc-1] += save_value;                         //hard cash increase
+                cin >> value;                                               //read action for divide
+                if (value >= 0 && value <= bank_cash[acc-1]) {              //check: is there enough bank cash
+                    bank_cash[acc-1] -= value;                              //bank cash decrease
+                    hard_cash[acc-1] += value;                              //hard cash increase
                     cout << "Transaction successful!";
                     getchar(); getchar();
                     break;
@@ -76,13 +76,13 @@ int main()
                 cout << "Unacceptable action! Try again." << endl << endl;
         } while (true);
 /*****************************************************************************************************************/
-        cout << "Do you wanna to continue (1 - yes; 2 - no)?: ";            ///request to continue
-        cin >> action;
-        if (action == 1) {                                                  //start again main infinite cycle
+        cout << "Do you wanna to continue (1 - yes)?: ";                    ///request to continue
+        cin >> value;
+        if (value == 1) {                                                   //start again main infinite cycle
             system ("cls");                                                 //console clear
             continue;
         }
-        else if (action == 2) {                                             //go to the end of the program
+        else if (value != 1) {                                              //go to the end of the program
             system ("cls");                                                 //console clear
             break;
         }
