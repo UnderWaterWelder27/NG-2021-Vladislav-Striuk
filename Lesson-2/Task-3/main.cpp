@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-    int l;
+    int l = 0;
     cout << "Enter length of square (integer & positive number): ";
     cin >> l;                                           //length input
     for (int y = 1; y <= l; y++) {                      //for each line
