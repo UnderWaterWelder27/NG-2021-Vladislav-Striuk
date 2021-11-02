@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
 /*****************************************************************************************************************/
-    int bank_cash[10], hard_cash[10], pincod[10], acc, value;
+    int bank_cash[10] = {0}, hard_cash[10] = {0}, pincod[10] = {0}, acc = 0, value = 0;
     for (int i = 0; i < 10; i++) {                                          //index loop iteration
         bank_cash[i] = rand();                                              //set value for bank cash
         hard_cash[i] = rand();                                              //set value for hard cash
