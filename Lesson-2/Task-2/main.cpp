@@ -4,8 +4,8 @@ using namespace std;
 
 int main()
 {
-    long long int num;
-    short int near_1, near_2, n_hash;   //storing the minimum digit
+    long long int num = 0;
+    short int near_1 = 0, near_2 = 0, n_hash = 0;
     cout << "Enter any positive integer number: "; cin >> num;
 
     for (long long int i = num; i >= 1; i /= 10) {
