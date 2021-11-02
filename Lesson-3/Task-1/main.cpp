@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-    int mass[10], add;
+    int mass[10] = {0}, add = 0;
     for (int i = 0; i < 10; i++) {          //index iteration loop
         cout << "mass[" << i << "] = ";
         cin >> mass[i];                     //enter values for array
