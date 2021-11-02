@@ -6,9 +6,9 @@ using namespace std;
 int main()
 {
     cout << "Enter coefficients (a, b, c) for ax^2 + bx + c = 0" << endl;
-    int a; cout << "a = "; cin >> a;
-    int b; cout << "b = "; cin >> b;
-    int c; cout << "c = "; cin >> c;
+    int a = 0; cout << "a = "; cin >> a;
+    int b = 0; cout << "b = "; cin >> b;
+    int c = 0; cout << "c = "; cin >> c;
 
     double D = pow(b, 2) - 4*a*c;
 
