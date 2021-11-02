@@ -4,10 +4,9 @@ using namespace std;
 
 int main()
 {
-    double m;
+    double m = 0;
     cout << "Enter the mass of the ship: ";
     cin >> m;
-    int f = m/3 - 2;
-    cout << "Required amount of fuel: " << f << endl;
+    cout << "Required amount of fuel: " << m/3 - 2 << endl;
     return 0;
 }
