@@ -33,6 +33,7 @@ int main()
         } while (!(acc > 0 && acc <= 10));
 
         do {                                                                    ///action (add/divide) cycle
+            if_no_money_goto:
             cout << "Money on your card: "  << bank_cash[acc-1] << " $" << endl;
             cout << "What I can do?"        << endl;
             cout << "1 - add money"         << endl;
@@ -52,12 +53,16 @@ int main()
                 case 2:                                                         ///action 2 - withdraw money
                     cout << "How much money to withdraw?: ";
                     cin >> value;                                               //read action for divide
-                    if (value >= 0) {                                           //check: is there enough bank cash
+                    if (value >= 0 && value <= bank_cash[acc-1]) {                                           //check: is there enough bank cash
                         bank_cash[acc-1] -= value;                              //bank cash decrease
                         cout << "Transaction successful!";
                         getchar(); getchar();
+                        break;
                     }
-                    break;
+                    else {
+                        cout << "You don\'t have enough money!" << endl;
+                        goto if_no_money_goto;
+                    }
                 default:                                                        ///if action != 1 or 2
                     cout << "Unacceptable action! Try again." << endl << endl;
                     getchar(); getchar();
