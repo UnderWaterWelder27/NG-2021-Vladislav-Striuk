@@ -13,8 +13,7 @@ int main()
 
     while (true) {                                                              ///main infinite cycle
         for (int i = 0; i < 10; i++) {                                          //pincod list
-            cout << "#" << i+1 << " pincode [" << i << "] = " << pincod[i] << "\t";
-            if (i == 4) cout << endl;
+            cout << "#" << i+1 << " pincode = " << pincod[i] << endl;
         }
         do {                                                                    ///bank account/pincod cycle
             cout << endl << endl << "Bank account: ";
@@ -53,7 +52,7 @@ int main()
                 case 2:                                                         ///action 2 - withdraw money
                     cout << "How much money to withdraw?: ";
                     cin >> value;                                               //read action for divide
-                    if (value >= 0 && value <= bank_cash[acc-1]) {                                           //check: is there enough bank cash
+                    if (value >= 0 && value <= bank_cash[acc-1]) {              //check: is there enough bank cash
                         bank_cash[acc-1] -= value;                              //bank cash decrease
                         cout << "Transaction successful!";
                         getchar(); getchar();
