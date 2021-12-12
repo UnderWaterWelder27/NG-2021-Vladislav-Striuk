@@ -12,64 +12,58 @@ int main()
     }
 
     while (true) {                                                              ///main infinite cycle
+        system ("cls");                                                         //console clear
         for (int i = 0; i < 10; i++) {                                          //pincod list
             cout << "#" << i+1 << " pincode = " << pincod[i] << endl;
         }
-        do {                                                                    ///bank account/pincod cycle
-            cout << endl << endl << "Bank account: ";
-            cin >> acc;
-            if (acc > 0 && acc <= 10) {                                         //check: does the account exist
-                do {                                                            //pincod cycle
-                    cout << "PIN for " << acc << " account: ";
-                    cin >> value;
-                    if (value != pincod[acc-1]) {                               //case: incorrect password
-                        cout << "Your password is incorrect!" << endl;
-                    }
-                } while (value != pincod[acc-1]);                               //exit the cycle password is correct
-            }
-            else
-                cout << "Account does not exist";                               //if account does exist
-        } while (!(acc > 0 && acc <= 10));
 
-        do {                                                                    ///action (add/divide) cycle
-            if_no_money_goto:
-            cout << "Money on your card: "  << bank_cash[acc-1] << " $" << endl;
-            cout << "What I can do?"        << endl;
-            cout << "1 - add money"         << endl;
-            cout << "2 - withdraw money"    << endl;
-            cin >> value;                                                       //read action (1 or 2)
+        cout << endl << endl << "Bank account: ";
+        cin >> acc;
+        if (!(acc > 0 && acc <= 10))                                            //check: does the account exist
+            continue;
 
-            switch (value) {
-                case 1:                                                         ///action 1 - add money
-                    cout << "How much money to add to your account?: ";
-                    cin >> value;                                               //read action for add
-                    if (value >= 0) {                                           //check: is there enough hard cash
-                        bank_cash[acc-1] += value;                              //bank cash increase
-                        cout << "Transaction successful!";
-                        getchar(); getchar();
-                    }
-                    break;
-                case 2:                                                         ///action 2 - withdraw money
-                    cout << "How much money to withdraw?: ";
-                    cin >> value;                                               //read action for divide
-                    if (value >= 0 && value <= bank_cash[acc-1]) {              //check: is there enough bank cash
-                        bank_cash[acc-1] -= value;                              //bank cash decrease
-                        cout << "Transaction successful!";
-                        getchar(); getchar();
-                        break;
-                    }
-                    else {
-                        cout << "You don\'t have enough money!" << endl;
-                        goto if_no_money_goto;
-                    }
-                default:                                                        ///if action != 1 or 2
-                    cout << "Unacceptable action! Try again." << endl << endl;
-                    getchar(); getchar();
+        cout << "PIN for " << acc << " account: ";
+        cin >> value;
+        if (value != pincod[acc-1])                                             //case: incorrect password
+            continue;
+
+        cout << "Money on your card: "  << bank_cash[acc-1] << " $" << endl;
+        cout << "What I can do?"        << endl;
+        cout << "1 - add money"         << endl;
+        cout << "2 - withdraw money"    << endl;
+        cin >> value;                                                           //read action (1 or 2)
+
+        if (value != 1 && value != 2)
+            continue;
+
+        switch (value) {
+            case 1:                                                             ///action 1 - add money
+            cout << "How much money to add to your account?: ";
+            cin >> value;                                                       //read action for add
+            if (value >= 0) {                                                   //check: is there enough hard cash
+                bank_cash[acc-1] += value;                                      //bank cash increase
+                cout << "Transaction successful!";
+                getchar(); getchar();
+                break;
+                }
+            else {
+                cout << "Unacceptable count! Try again." << endl << endl;
+                getchar(); getchar();
             }
-        } while (value < 1 && value > 2);
-            system ("cls");                                                     //console clear
-            continue;                                                           //start again main infinite cycle
+            case 2:                                                             ///action 2 - withdraw money
+            cout << "How much money to withdraw?: ";
+            cin >> value;                                                       //read action for divide
+            if (value >= 0 && value <= bank_cash[acc-1]) {                      //check: is there enough bank cash
+                bank_cash[acc-1] -= value;                                      //bank cash decrease
+                cout << "Transaction successful!";
+                getchar(); getchar();
+                break;
+                }
+            else {
+                cout << "Unacceptable count! Try again." << endl << endl;
+                getchar(); getchar();
+            }
+        }
     }
-    system("pause");
     return 0;
 }
