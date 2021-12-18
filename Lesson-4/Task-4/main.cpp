@@ -12,8 +12,15 @@ int main()
             sentence[i] == 'i' || sentence[i] == 'o' ||
             sentence[i] == 'u' || sentence[i] == 'y'   )
             word_hash += 1;
-        if (sentence[i] == '\0')    break;
+        if (sentence[i] == ' ') {
+            cout << word_hash;
+            word_hash = 0;
+            continue;
+            }
+        if (sentence[i] == '\0') {
+            cout << word_hash;
+            break;
+        }
     }
-    cout << word_hash;
     return 0;
 }
