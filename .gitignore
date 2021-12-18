@@ -9,3 +9,7 @@
 # Executable
 *.exe
 *.dll
+
+# Qt project files
+*.pro
+*.user
