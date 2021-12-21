@@ -4,15 +4,18 @@ using namespace std;
 
 int main()
 {
-    char sentence[256] = "";
+    char sentence[256] = "",
+         vowels[12] = {'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u', 'Y', 'y'};
     int word_hash = 0;
     cin.getline(sentence, 256);
 
-    for (int i = 0; sentence[i] != '\0'; i++) {
-        if (sentence[i] == 'a' || sentence[i] == 'e' || sentence[i] == 'A' || sentence[i] == 'E' ||
-            sentence[i] == 'i' || sentence[i] == 'o' || sentence[i] == 'I' || sentence[i] == 'O' ||
-            sentence[i] == 'u' || sentence[i] == 'y' || sentence[i] == 'U' || sentence[i] == 'Y'   )
-            word_hash += 1;
+    for (int i = 0; sentence[i] != '\0'; i++)
+    {
+        for (int j = 0; j < 12; j++)
+        {
+            if (sentence[i] == vowels[j])
+                word_hash += 1;
+        }
 
         if (sentence[i] == ' ' || sentence[i+1] == '\0') {
             cout << word_hash;
