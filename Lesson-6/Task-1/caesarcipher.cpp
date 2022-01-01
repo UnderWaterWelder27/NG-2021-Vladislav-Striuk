@@ -28,25 +28,25 @@ CaesarCipher::CaesarCipher(string data, int key)                /// InputData, C
     m_OutputDecipherData = "NO_OUTPUT_DECIPHER_DATA";
 }
 
-string CaesarCipher::enterDecipherInputData()
+string CaesarCipher::enterDecipherInputData()                   /// input a non-cipher text
 {
     string InputData;
-    cin.ignore();
+    cin.ignore();                                               //  ignore '\n' from previous "cin"
     cout << "Enter a text, which you want to cipher: ";
     getline(cin, InputData, '\n');
     return InputData;
 }
 
-string CaesarCipher::enterCipherInputData()
+string CaesarCipher::enterCipherInputData()                     /// input a cipher text
 {
     string InputData;
-    cin.ignore();
+    cin.ignore();                                               // ignore '\n' from previous "cin"
     cout << "Enter a text, which you want to decipher: ";
     getline(cin, InputData, '\n');
     return InputData;
 }
 
-int CaesarCipher::enterCipherKey()
+int CaesarCipher::enterCipherKey()                              /// enter value for text codding
 {
     int CipherKey;
     cout << "Enter a key for Caesar cipher: ";
@@ -54,7 +54,7 @@ int CaesarCipher::enterCipherKey()
     return CipherKey;
 }
 
-void CaesarCipher::showInfo()
+void CaesarCipher::showInfo()                                   /// function, that show getters
 {
     cout << endl << "==================================================================" << endl << endl
          << "Cipher Key: " << getCipherKey() << endl
@@ -64,7 +64,7 @@ void CaesarCipher::showInfo()
          << endl << "==================================================================" << endl << endl;
 }
 
-int CaesarCipher::chooseAction()
+int CaesarCipher::chooseAction()                                /// choosing beetwen cipher & decipher
 {
     int action;
     cout << "Cipher (1) or decipher (2) text? ";
@@ -72,15 +72,15 @@ int CaesarCipher::chooseAction()
     return action;
 }
 
-string CaesarCipher::cipherInputText(string data, int key)
+string CaesarCipher::cipherInputText(string data, int key)      /// algoritm of text cipher
 {
-    if (data == "")
+    if (data == "")                                             //  checking the emptiness availability
     {
         setInputData("NO_INPUT_DATA");
         return "NO_OUTPUT_CIPHER_DATA";
     }
 
-    if (key <= 0)
+    if (key <= 0)                                               //  checking the correct key input
     {
         setCipherKey(0);
         return data;
@@ -88,31 +88,31 @@ string CaesarCipher::cipherInputText(string data, int key)
 
     for (unsigned long long i = 0; i < data.length(); i++)
     {
-        if (data[i] >= 'a' && data[i] <= 'z')
+        if (data[i] >= 'a' && data[i] <= 'z')                   //  extension only for lowercase letters
         {
-            data[i] = data[i] + (key % 26);
-            if (data[i] > 'z')
+            data[i] = data[i] + key;                            //  shift char to the right by "key" elements
+            if (data[i] > 'z')                                  //  if char is non-letter
                 data[i] = 'a' + (data[i] - 'z') - 1;
         }
 
-        if (data[i] >= 'A' && data[i] <= 'Z')
+        if (data[i] >= 'A' && data[i] <= 'Z')                   //  extension only for uppercase letters
         {
-            data[i] = data[i] + (key % 26);
-            if (data[i] > 'Z')
+            data[i] = data[i] + key;                            //  shift char to the right by "key" elements
+            if (data[i] > 'Z')                                  //  if char is non-letter
                 data[i] = 'A' + (data[i] - 'Z') - 1;
         }
     }
     return data;
 }
 
-string CaesarCipher::decipherInputText(string data, int key)
+string CaesarCipher::decipherInputText(string data, int key)    /// algoritm of text decipher
 {
-    if (data == "")
+    if (data == "")                                             //  checking the emptiness availability
     {
         setInputData("NO_INPUT_DATA");
         return "NO_OUTPUT_DECIPHER_DATA";
     }
-    if (key <= 0)
+    if (key <= 0)                                               //  checking the correct key input
     {
         setCipherKey(0);
         return data;
@@ -120,17 +120,17 @@ string CaesarCipher::decipherInputText(string data, int key)
 
     for (unsigned long long i = 0; i < data.length(); i++)
     {
-        if (data[i] >= 'a' && data[i] <= 'z')
+        if (data[i] >= 'a' && data[i] <= 'z')                   //  extension only for lowercase letters
         {
-            data[i] = data[i] - (key % 26);
-            if (data[i] < 'a')
+            data[i] = data[i] - key;                            //  shift char to the left by "key" elements
+            if (data[i] < 'a')                                  //  if char is non-letter
                 data[i] = 'z' - ('a' - data[i]) + 1;
         }
 
-        if (data[i] >= 'A' && data[i] <= 'Z')
+        if (data[i] >= 'A' && data[i] <= 'Z')                   //  extension only for uppercase letters
         {
-            data[i] = data[i] - (key % 26);
-            if (data[i] < 'A')
+            data[i] = data[i] - key;                            //  shift char to the left by "key" elements
+            if (data[i] < 'A')                                  //  if char is non-letter
                 data[i] = 'Z' - ('A' - data[i]) + 1;
         }
     }
