@@ -1,11 +1,13 @@
 #include "fighteraircraft.h"
 #include "spacecruiser.h"
+#include "flagship.h"
 #include <iostream>
 
 using namespace std;
 
 int main()
 {
+    FlagShip flagship;
     SpaceCruiser cruiserA, cruiserB;
     FighterAircraft fighterA1, fighterA2, fighterA3, fighterA4, fighterA5, fighterA6,
                     fighterB1, fighterB2, fighterB3, fighterB4, fighterB5, fighterB6;
@@ -53,7 +55,14 @@ int main()
     cruiserA.addFighterAircraft(fighterA4);                 cruiserB.addFighterAircraft(fighterB4);
     cruiserA.addFighterAircraft(fighterA5);                 cruiserB.addFighterAircraft(fighterB5);
 
-    cruiserA.showCruiserInfo();
-    cruiserB.showCruiserInfo();
+    flagship.setFlagshipHealthPoint(10000);
+    flagship.setFlagshipArmor(5000);
+    flagship.setFlagshipFlySpeed(10);
+    /*flagship.setFlagshipFleetFlySpeed();*/
+
+    flagship.addSpaceCruiser(cruiserA);
+    flagship.addSpaceCruiser(cruiserB);
+
+    flagship.showFlagshipInfo();
     return 0;
 }

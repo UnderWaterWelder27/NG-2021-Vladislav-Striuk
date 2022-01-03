@@ -38,8 +38,8 @@ void FighterAircraft::setFighter_ModelName(string ModelName)
 void FighterAircraft::showFighterInfo()
 {
     cout << endl
-         << "=\t Model name: " << getFighter_ModelName() << endl
-         << "=\t Damage: " << getFighter_Damage() << " H" << endl
-         << "=\t Health points: " << getFighter_HealthPoint() << " HP" << endl
-         << "=\t Fly speed: " << getFighter_FlySpeed() << " km/s" << endl;
+         << "\t\t Model name: " << getFighter_ModelName() << endl
+         << "\t\t Damage: " << getFighter_Damage() << " H" << endl
+         << "\t\t Health points: " << getFighter_HealthPoint() << " HP" << endl
+         << "\t\t Fly speed: " << getFighter_FlySpeed() << " km/s" << endl;
 }

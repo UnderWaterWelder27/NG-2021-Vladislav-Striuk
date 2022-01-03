@@ -9,6 +9,7 @@ SpaceCruiser::SpaceCruiser()
     m_cruiserArmor = -1;
     m_cruiserFlySpeed = -1;
     m_placesAmount = 0;
+
     m_indexAmount = 0;
 }
 
@@ -37,12 +38,13 @@ void SpaceCruiser::setCruiserPlacesAmount(int PlacesAmount)
 /// SHOW INFORMATION ///
 void SpaceCruiser::showCruiserInfo()
 {
-    cout << endl << "==========================================================" << endl
-                 << "==========================================================" << endl << endl
-                 << "HealthPoint: " << getCruiserHealthPoint() << " HP" << endl
-                 << "Armor: " << getCruiserArmor() << " A"<< endl
-                 << "FlySpeed: " << getCruiserFlySpeed() << " km/s"<< endl
-                 << "PlacesCount: " << getCruiserPlacesCount() << endl;
+    cout << endl
+         << "\t Health point: " << getCruiserHealthPoint() << " HP" << endl
+         << "\t Armor: " << getCruiserArmor() << " A" << endl
+         << "\t Fly speed: " << getCruiserFlySpeed() << " km/s" << endl
+         << "\t Places count: " << getCruiserPlacesCount() << endl
+         << "\t Total damage: " << calculateGeneralDamage() << " H" << endl
+         << "\t Rate of speed: " << calculateMinimalSpeed() << " km/s" << endl;
 
     for (FighterAircraft aircraft : m_cruiserFighter)
     {
@@ -59,7 +61,21 @@ void SpaceCruiser::addFighterAircraft(FighterAircraft aircraft)
     }
 }
 
-void SpaceCruiser::calculateGeneralDamage()
+float SpaceCruiser::calculateGeneralDamage()
 {
+    float totalDamage = 0;
+    for (int i = 0; i < m_placesAmount; i++)
+        totalDamage += m_cruiserFighter[i].getFighter_Damage();
+    return totalDamage;
+}
 
+float SpaceCruiser::calculateMinimalSpeed()
+{
+    float minimalSpeed = m_cruiserFighter[0].getFighter_FlySpeed();
+    for (int i = 0; i < m_placesAmount; i++)
+    {
+        if (minimalSpeed > m_cruiserFighter[i].getFighter_FlySpeed())
+            minimalSpeed = m_cruiserFighter[i].getFighter_FlySpeed();
+    }
+    return minimalSpeed;
 }
