@@ -1,10 +1,10 @@
 #ifndef SPACECRUISER_H
 #define SPACECRUISER_H
 
-#include "fighteraircraft.h"
 #include <vector>
+#include "fighteraircraft.h"
 
-class SpaceCruiser : public FighterAircraft
+class SpaceCruiser
 {
 
 public:
@@ -15,7 +15,7 @@ public:
     void setCruiserHealthPoint(float HealthPoint);
     void setCruiserArmor(float Armor);
     void setCruiserFlySpeed(float FlySpeed);
-    void setCruiserPlacesAmount(float PlacesAmount);
+    void setCruiserPlacesAmount(int PlacesAmount);
 
 /// GETTERS ///
     float getCruiserHealthPoint()   { return m_cruiserHealthPoint;}
@@ -26,6 +26,8 @@ public:
 /// ACTION FUNCTIONS ///
     void showCruiserInfo();
     void addFighterAircraft(FighterAircraft aircraft);
+    void calculateGeneralDamage();
+
 
 private:
 
@@ -33,7 +35,8 @@ private:
     float m_cruiserArmor;
     float m_cruiserFlySpeed;
     int   m_placesAmount;
-    std::vector <FighterAircraft> fighterPlace;
+    int   m_indexAmount;
+    std::vector <FighterAircraft> m_cruiserFighter;
 };
 
 #endif // SPACECRUISER_H
