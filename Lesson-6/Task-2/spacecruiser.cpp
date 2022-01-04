@@ -39,6 +39,7 @@ void SpaceCruiser::setCruiserPlacesAmount(int PlacesAmount)
 void SpaceCruiser::showCruiserInfo()
 {
     cout << endl
+         << "\t S P A C E   C R U I S E R" << endl
          << "\t Health point: " << getCruiserHealthPoint() << " HP" << endl
          << "\t Armor: " << getCruiserArmor() << " A" << endl
          << "\t Fly speed: " << getCruiserFlySpeed() << " km/s" << endl

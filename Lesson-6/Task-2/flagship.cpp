@@ -26,26 +26,20 @@ void FlagShip::setFlagshipFlySpeed(float FlySpeed)
     if (FlySpeed >= 0)
         m_flagshipFlySpeed = FlySpeed;
 }
-
-void FlagShip::setFlagshipFleetFlySpeed()
+void FlagShip::setFlagshipFleetFlySpeed(float FleetFlySpeed)
 {
-    float fleetSpeed = m_flagshipSpacecruiser[0].calculateMinimalSpeed();
-    for (int i = 0; i < 2; i++)
-    {
-        if (fleetSpeed > m_flagshipSpacecruiser[i].calculateMinimalSpeed())
-            fleetSpeed = m_flagshipSpacecruiser[i].calculateMinimalSpeed();
-    }
-    m_flagshipFleetFlySpeed = fleetSpeed;
+    if (FleetFlySpeed >= 0)
+        m_flagshipFleetFlySpeed = FleetFlySpeed;
 }
 
 void FlagShip::showFlagshipInfo()
 {
-    cout << endl << "==========================================================" << endl
-                 << "==========================================================" << endl << endl
-                 << "Health point: " << getFlagshipHealthPoint() << " HP" << endl
-                 << "Armor: " << getFlagshipArmor() << " A" << endl
-                 << "Fly speed: " << getFlagshipFlySpeed() << " km/s" << endl
-                 << "Fleet fly speed: " << getFlagshipFleetFlySpeed() << " km/s" << endl;
+    cout << endl
+         << "F L A G S H I P" << endl
+         << "Health point: " << getFlagshipHealthPoint() << " HP" << endl
+         << "Armor: " << getFlagshipArmor() << " A" << endl
+         << "Fly speed: " << getFlagshipFlySpeed() << " km/s" << endl
+         << "Fleet fly speed: " << calculateFleetFlySpeed() << " km/s" << endl;
 
     for (SpaceCruiser cruiser : m_flagshipSpacecruiser)
     {
@@ -56,4 +50,16 @@ void FlagShip::showFlagshipInfo()
 void FlagShip::addSpaceCruiser(SpaceCruiser cruiser)
 {
     m_flagshipSpacecruiser.push_back(cruiser);
+}
+
+float FlagShip::calculateFleetFlySpeed()
+{
+    float fleetFlySpeed = m_flagshipSpacecruiser[0].calculateMinimalSpeed();
+    for (unsigned long long i = 0; i < m_flagshipSpacecruiser.size(); i++)
+    {
+        if (fleetFlySpeed > m_flagshipSpacecruiser[i].calculateMinimalSpeed())
+            fleetFlySpeed = m_flagshipSpacecruiser[i].calculateMinimalSpeed();
+    }
+    setFlagshipFleetFlySpeed(fleetFlySpeed);
+    return getFlagshipFleetFlySpeed();
 }

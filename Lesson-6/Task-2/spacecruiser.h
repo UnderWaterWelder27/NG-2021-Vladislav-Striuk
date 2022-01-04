@@ -29,15 +29,13 @@ public:
     float calculateGeneralDamage();
     float calculateMinimalSpeed();
 
-protected:
-    int   m_placesAmount;
-
 private:
 
     float m_cruiserHealthPoint;
     float m_cruiserArmor;
     float m_cruiserFlySpeed;
     int   m_indexAmount;
+    int   m_placesAmount;
     std::vector <FighterAircraft> m_cruiserFighter;
 };
 

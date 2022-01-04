@@ -4,7 +4,7 @@
 #include "spacecruiser.h"
 #include <vector>
 
-class FlagShip : protected SpaceCruiser
+class FlagShip
 {
 
 public:
@@ -15,7 +15,7 @@ public:
     void setFlagshipHealthPoint(float HealthPoint);
     void setFlagshipArmor(float Armor);
     void setFlagshipFlySpeed(float FlySpeed);
-    void setFlagshipFleetFlySpeed();
+    void setFlagshipFleetFlySpeed(float FleetFlySpeed);
 
 /// GETTERS ///
     float getFlagshipHealthPoint()      { return m_flagshipHealthPoint; }
@@ -26,6 +26,7 @@ public:
 /// ACTION FUNCTIONS ///
     void showFlagshipInfo();
     void addSpaceCruiser(SpaceCruiser cruiser);
+    float calculateFleetFlySpeed();
 
 private:
 
