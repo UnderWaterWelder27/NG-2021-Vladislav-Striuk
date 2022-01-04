@@ -50,13 +50,17 @@ int main()
     cruiserA.addFighterAircraft(fighterA4);                 cruiserB.addFighterAircraft(fighterB4);
     cruiserA.addFighterAircraft(fighterA5);                 cruiserB.addFighterAircraft(fighterB5);
 
+    /// FLAGSHIP ///
     flagship.setFlagshipHealthPoint(10000);
     flagship.setFlagshipArmor(5000);
     flagship.setFlagshipFlySpeed(10);
 
+    /// ADD ALL SPACECRUISERS ///
     flagship.addSpaceCruiser(cruiserA);
     flagship.addSpaceCruiser(cruiserB);
 
+    /// SHOW ALL INFORAMTION ///
     flagship.showFlagshipInfo();
+
     return 0;
 }

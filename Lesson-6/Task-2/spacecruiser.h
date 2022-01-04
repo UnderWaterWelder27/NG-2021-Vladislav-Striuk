@@ -25,18 +25,18 @@ public:
 
 /// ACTION FUNCTIONS ///
     void showCruiserInfo();
-    void addFighterAircraft(FighterAircraft aircraft);
-    float calculateGeneralDamage();
-    float calculateMinimalSpeed();
+    void addFighterAircraft(FighterAircraft aircraft);                      // add initialized FighterAircraft-element to vector
+    float calculateGeneralDamage();                                         // sum of all damage of every fightercraft
+    float calculateMinimalSpeed();                                          // search for minimal fightercraft speed in cruiser
 
 private:
 
     float m_cruiserHealthPoint;
     float m_cruiserArmor;
     float m_cruiserFlySpeed;
-    int   m_indexAmount;
-    int   m_placesAmount;
-    std::vector <FighterAircraft> m_cruiserFighter;
+    int   m_indexAmount;                                                    // used in (addFighterAircraft) - variable
+    int   m_placesAmount;                                                   // setted value to places amount
+    std::vector <FighterAircraft> m_cruiserFighter;                         // FighterAircraft vector-array type
 };
 
 #endif // SPACECRUISER_H

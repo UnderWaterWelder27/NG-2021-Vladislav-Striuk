@@ -25,8 +25,8 @@ public:
 
 /// ACTION FUNCTIONS ///
     void showFlagshipInfo();
-    void addSpaceCruiser(SpaceCruiser cruiser);
-    float calculateFleetFlySpeed();
+    void addSpaceCruiser(SpaceCruiser cruiser);                             // add initialized SpaceCruiser-element to vector
+    float calculateFleetFlySpeed();                                         // search for minimal spacecruiser speed in flagship
 
 private:
 
@@ -34,7 +34,7 @@ private:
     float m_flagshipArmor;
     float m_flagshipFlySpeed;
     float m_flagshipFleetFlySpeed;
-    std::vector <SpaceCruiser> m_flagshipSpacecruiser;
+    std::vector <SpaceCruiser> m_flagshipSpacecruiser;                      // SpaceCruiser vector-array type
 };
 
 #endif // FLAGSHIP_H

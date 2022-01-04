@@ -55,7 +55,7 @@ void SpaceCruiser::showCruiserInfo()
 
 void SpaceCruiser::addFighterAircraft(FighterAircraft aircraft)
 {
-    if (m_indexAmount < getCruiserPlacesCount())
+    if (m_indexAmount < getCruiserPlacesCount())                                    // true while m_indexAmount != m_placesAmount
     {
         m_cruiserFighter.push_back(aircraft);
         m_indexAmount++;
