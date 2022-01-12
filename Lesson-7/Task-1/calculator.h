@@ -19,6 +19,10 @@ private:
     Ui::Calculator *ui;
 
 private slots:
-    void clickNumber();
+    void numInput();
+    void addDot();
+    void operationPercentage();
+    void operators();
+    void clearLabel();
 };
 #endif // CALCULATOR_H
