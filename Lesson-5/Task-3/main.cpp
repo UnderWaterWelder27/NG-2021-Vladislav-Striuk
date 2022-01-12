@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
@@ -38,7 +37,8 @@ float bracketsPriority()
     return 0;
 }
 
-float sqrtPow()
+
+float expressionMutiplyDivide()
 {
     float num = bracketsPriority();
     while(true)
@@ -46,32 +46,11 @@ float sqrtPow()
         char digit = cin.get();
         switch (digit)
         {
-        case '^':
-            num = pow(num, bracketsPriority());
-            break;
-        case '#':
-            num = sqrt(num);
-            break;
-        default:
-            cin.putback(digit);
-            return num;
-        }
-    }
-}
-
-float expressionMutiplyDivide()
-{
-    float num = sqrtPow();
-    while(true)
-    {
-        char digit = cin.get();
-        switch (digit)
-        {
         case '*':
-            num *= sqrtPow();
+            num *= bracketsPriority();
             break;
         case '/':
-            num /= sqrtPow();
+            num /= bracketsPriority();
             break;
         default:
             cin.putback(digit);
@@ -100,7 +79,6 @@ float expressionAddSubtract()
         }
     }
 }
-
 
 int main()
 {
