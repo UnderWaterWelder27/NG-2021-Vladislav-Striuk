@@ -12,10 +12,11 @@ int main()
     FighterAircraft fighterA1, fighterA2, fighterA3, fighterA4, fighterA5, fighterA6,
                     fighterB1, fighterB2, fighterB3, fighterB4, fighterB5, fighterB6;
 
+    /// FLAGSHIP ///
+    flagship.setFlagshipArmor(5000);
+
     /// FIRST CRUISER ///                                   /// SECOND CRUISER ///
-    cruiserA.setCruiserHealthPoint(3500);                   cruiserB.setCruiserHealthPoint(5500);
     cruiserA.setCruiserArmor(1000);                         cruiserB.setCruiserArmor(2000);
-    cruiserA.setCruiserFlySpeed(20);                        cruiserB.setCruiserFlySpeed(25);
     cruiserA.setCruiserPlacesAmount(5);                     cruiserB.setCruiserPlacesAmount(5);
 
     /// 1st A-AIRCRAFT ///                                  /// 1st B-AIRCRAFT ///
@@ -49,11 +50,6 @@ int main()
     cruiserA.addFighterAircraft(fighterA3);                 cruiserB.addFighterAircraft(fighterB3);
     cruiserA.addFighterAircraft(fighterA4);                 cruiserB.addFighterAircraft(fighterB4);
     cruiserA.addFighterAircraft(fighterA5);                 cruiserB.addFighterAircraft(fighterB5);
-
-    /// FLAGSHIP ///
-    flagship.setFlagshipHealthPoint(10000);
-    flagship.setFlagshipArmor(5000);
-    flagship.setFlagshipFlySpeed(10);
 
     /// ADD ALL SPACECRUISERS ///
     flagship.addSpaceCruiser(cruiserA);

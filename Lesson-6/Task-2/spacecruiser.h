@@ -4,7 +4,7 @@
 #include <vector>
 #include "fighteraircraft.h"
 
-class SpaceCruiser
+class SpaceCruiser : protected FighterAircraft
 {
 
 public:
@@ -12,15 +12,11 @@ public:
     SpaceCruiser();
 
 /// SETTERS ///
-    void setCruiserHealthPoint(float HealthPoint);
     void setCruiserArmor(float Armor);
-    void setCruiserFlySpeed(float FlySpeed);
     void setCruiserPlacesAmount(int PlacesAmount);
 
 /// GETTERS ///
-    float getCruiserHealthPoint()   { return m_cruiserHealthPoint;}
     float getCruiserArmor()         { return m_cruiserArmor;}
-    float getCruiserFlySpeed()      { return m_cruiserFlySpeed;}
     int   getCruiserPlacesCount()   { return m_placesAmount;}
 
 /// ACTION FUNCTIONS ///
@@ -28,12 +24,11 @@ public:
     void addFighterAircraft(FighterAircraft aircraft);                      // add initialized FighterAircraft-element to vector
     float calculateGeneralDamage();                                         // sum of all damage of every fightercraft
     float calculateMinimalSpeed();                                          // search for minimal fightercraft speed in cruiser
+    float calculateMaximumHealthPoint();                                    // search for maximal fightercraft HP in cruiser
 
 private:
 
-    float m_cruiserHealthPoint;
     float m_cruiserArmor;
-    float m_cruiserFlySpeed;
     int   m_indexAmount;                                                    // used in (addFighterAircraft) - variable
     int   m_placesAmount;                                                   // setted value to places amount
     std::vector <FighterAircraft> m_cruiserFighter;                         // FighterAircraft vector-array type

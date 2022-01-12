@@ -22,11 +22,15 @@ public:
 /// ACTION FUNCTIONS ///
     void showFighterInfo();
 
+protected:
+
+    float m_fighterFlySpeed;
+    float m_fighterHealthPoint;
+
 private:
 
     float m_fighterDamage;
-    float m_fighterHealthPoint;
-    float m_fighterFlySpeed;
+
 };
 
 #endif // FIGHTERAIRCRAFT_H
