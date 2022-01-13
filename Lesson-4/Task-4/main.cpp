@@ -5,7 +5,7 @@ using namespace std;
 int main()
 {
     char sentence[256] = "";
-    char *vowels = "AaEeIiOoUuYy";
+    char vowels[] = "AaEeIiOoUuYy";
     int word_hash = 0;
     cin.getline(sentence, 256);
 
