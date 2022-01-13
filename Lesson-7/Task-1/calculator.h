@@ -2,6 +2,7 @@
 #define CALCULATOR_H
 
 #include <QMainWindow>
+#include <QString>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Calculator; }
@@ -20,9 +21,12 @@ private:
 
 private slots:
     void numInput();
-    void addDot();
+    void dotInput();
     void operationPercentage();
     void operators();
     void clearLabel();
+    void resultExpression();
+
+    /*bool checkOperatorInput;*/
 };
 #endif // CALCULATOR_H

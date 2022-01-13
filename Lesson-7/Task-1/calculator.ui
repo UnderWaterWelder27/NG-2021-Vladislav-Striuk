@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>240</width>
+    <width>300</width>
     <height>360</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>240</width>
+    <width>300</width>
     <height>360</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>240</width>
+    <width>300</width>
     <height>360</height>
    </size>
   </property>
@@ -29,24 +29,24 @@
    <string notr="true">background-color : white;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="b_bracketClose">
+   <widget class="QPushButton" name="b_operatorSqrt">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>60</y>
-      <width>30</width>
+      <x>240</x>
+      <y>240</y>
+      <width>60</width>
       <height>60</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
@@ -68,27 +68,27 @@ QPushButton:pressed {
 }</string>
     </property>
     <property name="text">
-     <string>)</string>
+     <string>sqrt</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="b_bracketOpen">
+   <widget class="QPushButton" name="b_operatorPow">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>60</y>
-      <width>30</width>
+      <x>240</x>
+      <y>180</y>
+      <width>60</width>
       <height>60</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
@@ -110,7 +110,7 @@ QPushButton:pressed {
 }</string>
     </property>
     <property name="text">
-     <string>(</string>
+     <string>x^2</string>
     </property>
    </widget>
    <widget class="QPushButton" name="b_operatorAdd">
@@ -317,21 +317,21 @@ QPushButton:pressed {
    <widget class="QPushButton" name="b_dot">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>60</x>
       <y>300</y>
-      <width>60</width>
+      <width>120</width>
       <height>60</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>60</width>
+      <width>120</width>
       <height>60</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>60</width>
+      <width>120</width>
       <height>60</height>
      </size>
     </property>
@@ -358,19 +358,19 @@ QPushButton:pressed {
      <rect>
       <x>0</x>
       <y>300</y>
-      <width>120</width>
+      <width>60</width>
       <height>60</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>0</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>16777215</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
@@ -548,24 +548,24 @@ QPushButton:pressed {
      <string>6</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="b_actionClear">
+   <widget class="QPushButton" name="b_backspaceLabel">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>60</x>
       <y>60</y>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
@@ -633,7 +633,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="b_operatorPercentage">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>240</x>
       <y>60</y>
       <width>60</width>
       <height>60</height>
@@ -677,19 +677,19 @@ QPushButton:pressed {
      <rect>
       <x>180</x>
       <y>300</y>
-      <width>60</width>
+      <width>120</width>
       <height>60</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>60</width>
+      <width>120</width>
       <height>60</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>60</width>
+      <width>120</width>
       <height>60</height>
      </size>
     </property>
@@ -719,25 +719,25 @@ QPushButton:pressed {
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>240</width>
-      <height>60</height>
+      <width>300</width>
+      <height>40</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>240</width>
-      <height>60</height>
+      <width>300</width>
+      <height>40</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>240</width>
-      <height>60</height>
+      <width>300</width>
+      <height>40</height>
      </size>
     </property>
     <property name="font">
      <font>
-      <pointsize>13</pointsize>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -758,27 +758,27 @@ background-color : white;</string>
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
     <property name="margin">
-     <number>15</number>
+     <number>0</number>
     </property>
    </widget>
-   <widget class="QPushButton" name="b_actionClearAll">
+   <widget class="QPushButton" name="b_clearLabel">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>60</y>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>30</width>
+      <width>60</width>
       <height>60</height>
      </size>
     </property>
@@ -919,6 +919,137 @@ QPushButton:pressed {
     </property>
     <property name="text">
      <string>*</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="b_operatorFraction">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>120</y>
+      <width>60</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+  background-color: rgb(255, 151, 57);
+  color: white; 
+  border: 1px solid gray;
+}
+
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FF7832, stop: 1 #FF9739);
+}</string>
+    </property>
+    <property name="text">
+     <string>1/x</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="b_operatorPlusMinus">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>60</y>
+      <width>60</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+  background-color: rgb(255, 151, 57);
+  color: white; 
+  border: 1px solid gray;
+}
+
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FF7832, stop: 1 #FF9739);
+}</string>
+    </property>
+    <property name="text">
+     <string>+-</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="e_expressionOutput">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>40</y>
+      <width>300</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>300</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>300</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+  qproperty-alignment: 'AlignVCenter | AlignRight';
+  border: 1px solid gray;
+}
+
+background-color : white;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="margin">
+     <number>0</number>
     </property>
    </widget>
   </widget>
