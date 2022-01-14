@@ -1,16 +1,20 @@
 #include "calculator.h"
 #include "ui_calculator.h"
 
-double first_number = 0;
+#include <cmath>
 
 Calculator::Calculator(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Calculator)
 {
-    //checkOperatorInput = true;
+    leftOperand = 0.0;
+    rightOperand = 0.0;
+    checkOperatorInput = true;
+    percentActive = false;
+
     ui->setupUi(this);
 
-/// NUMBERS CLICK
+    /// NUMBERS
     connect (ui->b_num_0, &QPushButton::clicked, this, &Calculator::numInput);
     connect (ui->b_num_1, &QPushButton::clicked, this, &Calculator::numInput);
     connect (ui->b_num_2, &QPushButton::clicked, this, &Calculator::numInput);
@@ -22,35 +26,30 @@ Calculator::Calculator(QWidget *parent)
     connect (ui->b_num_8, &QPushButton::clicked, this, &Calculator::numInput);
     connect (ui->b_num_9, &QPushButton::clicked, this, &Calculator::numInput);
 
-/// DOT
+    /// DOT
     connect (ui->b_dot, &QPushButton::clicked, this, &Calculator::Calculator::dotInput);
 
-/// CLEAR LABEL
+    /// CLEAR LABEL
     connect (ui->b_backspaceLabel, &QPushButton::clicked, this, &Calculator::clearLabel);
     connect (ui->b_clearLabel, &QPushButton::clicked, this, &Calculator::clearLabel);
 
-/// UNARY OPERATIONS
-    connect (ui->b_operatorPercentage, &QPushButton::clicked, this, &Calculator::operationPercentage);
-    connect (ui->b_operatorFraction, &QPushButton::clicked, this, &Calculator::operationPercentage);
-    connect (ui->b_operatorPlusMinus, &QPushButton::clicked, this, &Calculator::operationPercentage);
-    connect (ui->b_operatorPow, &QPushButton::clicked, this, &Calculator::operationPercentage);
-    connect (ui->b_operatorSqrt, &QPushButton::clicked, this, &Calculator::operationPercentage);
+    /// UNARY OPERATIONS
+    connect (ui->b_operatorPercentage, &QPushButton::clicked, this, &Calculator::unaryOpearation);
+    connect (ui->b_operatorPlusMinus, &QPushButton::clicked, this, &Calculator::unaryOpearation);
+    connect (ui->b_operatorFraction, &QPushButton::clicked, this, &Calculator::unaryOpearation);
+    connect (ui->b_operatorPow, &QPushButton::clicked, this, &Calculator::unaryOpearation);
+    connect (ui->b_operatorSqrt, &QPushButton::clicked, this, &Calculator::unaryOpearation);
 
-/// BINARY OPERATIONS
-//  ADDITIVE
-    connect (ui->b_operatorAdd, &QPushButton::clicked, this, &Calculator::operators);
-    connect (ui->b_operatorSubtract, &QPushButton::clicked, this, &Calculator::operators);
+    /// ADDITIVE OPERATIONS
+    connect (ui->b_operatorAdd, &QPushButton::clicked, this, &Calculator::additiveOperation);
+    connect (ui->b_operatorSubtract, &QPushButton::clicked, this, &Calculator::additiveOperation);
 
-//  MULTIPLICATIVE
-    connect (ui->b_operatorMultiply, &QPushButton::clicked, this, &Calculator::operators);
-    connect (ui->b_operatorDivide, &QPushButton::clicked, this, &Calculator::operators);
+    /// MULTIPLICATIVE OPERATIONS
+    connect (ui->b_operatorMultiply, &QPushButton::clicked, this, &Calculator::multiplicativeOperation);
+    connect (ui->b_operatorDivide, &QPushButton::clicked, this, &Calculator::multiplicativeOperation);
 
-    ui->b_operatorAdd->setCheckable(true);
-    ui->b_operatorSubtract->setCheckable(true);
-    ui->b_operatorMultiply->setCheckable(true);
-    ui->b_operatorDivide->setCheckable(true);
-
-    connect (ui->b_operatorEqual, &QPushButton::clicked, this, &Calculator::resultExpression);
+    /// EQUAL
+    connect (ui->b_operatorEqual, &QPushButton::clicked, this, &Calculator::expressionResult);
 }
 
 Calculator::~Calculator()
@@ -58,58 +57,97 @@ Calculator::~Calculator()
     delete ui;
 }
 
-/*
-    REALIZED FUNCTIONS :
-void Calculator::numInput();
-void Calculator::dotInput();
-void Calculator::clearLabel();
 
-
-
-*/
 
 
 void Calculator::numInput()
 {
     QPushButton *numButton = (QPushButton*)sender();
-    double fullNum = (ui->e_expressionInput->text() + numButton->text()).toDouble();
-    QString numString = QString::number(fullNum, 'g', 15);
-    ui->e_expressionInput->setText(numString);
-    ui->e_expressionOutput->setText(ui->e_expressionOutput->text() + numButton->text());
+    double fullNum = ui->e_expressionInput->text().toDouble();
+
+    if (ui->e_expressionInput->text() == "0" && fullNum == 0.0)
+        return;
+
+    if (checkOperatorInput)
+    {
+        ui->e_expressionInput->clear();
+        checkOperatorInput = false;
+    }
+
+    ui->e_expressionInput->setText(ui->e_expressionInput->text()  + numButton->text());
+
+    percentActive = false;
 }
 
 void Calculator::dotInput()
 {
-    //if (checkOperatorInput)
-        //ui->e_expressionInput->setText("0");
+    if (ui->e_expressionInput->text().isEmpty())
+        ui->e_expressionInput->setText("0");
     if (ui->e_expressionInput->text().contains('.') == false)
     {
         ui->e_expressionInput->setText(ui->e_expressionInput->text() + '.');
-        ui->e_expressionOutput->setText(ui->e_expressionOutput->text() + '.');
     }
-    //checkOperatorInput = false;
+    checkOperatorInput = false;
 }
 
-
-void Calculator::operationPercentage()                                      // does not ready
+void Calculator::unaryOpearation()
 {
-    //if (checkOperatorInput)
-    //{
-        double percentNum = (ui->e_expressionInput->text().toDouble()) * 0.01;
-        QString numString = QString::number(percentNum, 'g', 15);
-        ui->e_expressionInput->setText(numString);
-    //}
-    //else
-        //ui->e_expressionInput->setText("ERROR");
-    ui->e_expressionOutput->setText(ui->e_expressionOutput->text() + "%");
+    QPushButton *unarOpButton = (QPushButton*)sender();
+    double unaryActionNum = 0.0;
+
+    if (unarOpButton->text() == "%")
+        unaryActionNum = (ui->e_expressionInput->text().toDouble()) * 0.01;
+
+    if (unarOpButton->text() == "+-")
+        unaryActionNum = (ui->e_expressionInput->text().toDouble()) * (-1);
+
+    if (unarOpButton->text() == "1/x")
+    {
+        if (ui->e_expressionInput->text().toDouble() == 0)
+        {
+            wrongAction();
+            return;
+        }
+        else
+            unaryActionNum = 1.0 / (ui->e_expressionInput->text().toDouble());
+    }
+
+    if (unarOpButton->text() == "x^2")
+        unaryActionNum = pow(ui->e_expressionInput->text().toDouble(), 2);
+
+    if (unarOpButton->text() == "sqrt")
+    {
+        if (ui->e_expressionInput->text().toDouble() < 0)
+        {
+            wrongAction();
+            return;
+        }
+        unaryActionNum = sqrt(ui->e_expressionInput->text().toDouble());
+    }
+
+    QString numString = QString::number(unaryActionNum, 'g', 15);
+    ui->e_expressionInput->setText(numString);
 }
 
-void Calculator::operators()                                                // does not ready
+void Calculator::additiveOperation()
 {
-    QPushButton *operatorButton = (QPushButton*)sender();
-    first_number = ui->e_expressionInput->text().toDouble();
-    ui->e_expressionInput->setText("");
-    operatorButton->setChecked(true);
+
+}
+
+void Calculator::multiplicativeOperation()
+{
+
+}
+
+void Calculator::wrongAction()
+{
+    ui->e_expressionInput->setText("Error");
+    checkOperatorInput = false;
+}
+
+void Calculator::expressionResult()
+{
+
 }
 
 void Calculator::clearLabel()
@@ -118,56 +156,20 @@ void Calculator::clearLabel()
 
     if (clearButton->text() == "AC")
     {
-        ui->e_expressionInput->setText("0");
-        ui->e_expressionOutput->setText("");
-        //checkOperatorInput = true;
+        ui->e_expressionInput->setText("");
+        checkOperatorInput = true;
     }
+
     else if (clearButton->text() == "C")
     {
-        //if (checkOperatorInput)
-            //return;
-        //else
-        //{
-            ui->e_expressionInput->setText(ui->e_expressionInput->text().left(ui->e_expressionInput->text().size() - 1));
-            ui->e_expressionOutput->setText(ui->e_expressionInput->text());
-            if (ui->e_expressionInput->text().isEmpty())
-            {
-                ui->e_expressionInput->setText("0");
-                ui->e_expressionOutput->setText("");
-                //checkOperatorInput = true;
-            }
-        //}
+        ui->e_expressionInput->setText(ui->e_expressionInput->text().left(ui->e_expressionInput->text().size() - 1));
+        if (ui->e_expressionInput->text().isEmpty())
+        {
+            ui->e_expressionInput->setText("");
+            checkOperatorInput = true;
+        }
     }
 }
 
-void Calculator::resultExpression()
-{
-    double second_number = ui->e_expressionInput->text().toDouble(),
-           result = 0;
-
-    if (ui->b_operatorAdd->isChecked())
-    {
-        result = first_number + second_number;
-        ui->b_operatorAdd->setChecked(false);
-    }
-    else if (ui->b_operatorSubtract->isChecked())
-    {
-        result = first_number - second_number;
-        ui->b_operatorSubtract->setChecked(false);
-    }
-    else if (ui->b_operatorMultiply->isChecked())
-    {
-        result = first_number * second_number;
-        ui->b_operatorMultiply->setChecked(false);
-    }
-    else if (ui->b_operatorDivide->isChecked())
-    {
-        result = first_number / second_number;
-        ui->b_operatorDivide->setChecked(false);
-    }
-
-    QString resultString = QString::number(result, 'g', 15);
-    ui->e_expressionInput->setText(resultString);
-}
 
 

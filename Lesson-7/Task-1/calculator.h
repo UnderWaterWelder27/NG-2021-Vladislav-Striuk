@@ -19,14 +19,21 @@ public:
 private:
     Ui::Calculator *ui;
 
+    double leftOperand;
+    double rightOperand;
+    bool checkOperatorInput;
+    bool percentActive;
+
 private slots:
     void numInput();
     void dotInput();
-    void operationPercentage();
-    void operators();
-    void clearLabel();
-    void resultExpression();
 
-    /*bool checkOperatorInput;*/
+    void unaryOpearation();
+    void additiveOperation();
+    void multiplicativeOperation();
+
+    void wrongAction();
+    void expressionResult();
+    void clearLabel();
 };
 #endif // CALCULATOR_H
