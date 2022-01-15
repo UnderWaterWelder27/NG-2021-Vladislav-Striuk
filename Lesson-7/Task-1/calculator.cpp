@@ -7,10 +7,11 @@ Calculator::Calculator(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Calculator)
 {
-    leftOperand = 0.0;
-    rightOperand = 0.0;
+
+    saveLeftOperand = 0.0;
+    saveRightOperand = 0.0;
+    saveLastOperation = "";
     checkOperatorInput = true;
-    percentActive = false;
 
     ui->setupUi(this);
 
@@ -41,12 +42,12 @@ Calculator::Calculator(QWidget *parent)
     connect (ui->b_operatorSqrt, &QPushButton::clicked, this, &Calculator::unaryOpearation);
 
     /// ADDITIVE OPERATIONS
-    connect (ui->b_operatorAdd, &QPushButton::clicked, this, &Calculator::additiveOperation);
-    connect (ui->b_operatorSubtract, &QPushButton::clicked, this, &Calculator::additiveOperation);
+    connect (ui->b_operatorAdd, &QPushButton::clicked, this, &Calculator::inMemoryOperation);
+    connect (ui->b_operatorSubtract, &QPushButton::clicked, this, &Calculator::inMemoryOperation);
 
     /// MULTIPLICATIVE OPERATIONS
-    connect (ui->b_operatorMultiply, &QPushButton::clicked, this, &Calculator::multiplicativeOperation);
-    connect (ui->b_operatorDivide, &QPushButton::clicked, this, &Calculator::multiplicativeOperation);
+    connect (ui->b_operatorMultiply, &QPushButton::clicked, this, &Calculator::inMemoryOperation);
+    connect (ui->b_operatorDivide, &QPushButton::clicked, this, &Calculator::inMemoryOperation);
 
     /// EQUAL
     connect (ui->b_operatorEqual, &QPushButton::clicked, this, &Calculator::expressionResult);
@@ -57,9 +58,6 @@ Calculator::~Calculator()
     delete ui;
 }
 
-
-
-
 void Calculator::numInput()
 {
     QPushButton *numButton = (QPushButton*)sender();
@@ -68,15 +66,13 @@ void Calculator::numInput()
     if (ui->e_expressionInput->text() == "0" && fullNum == 0.0)
         return;
 
-    if (checkOperatorInput)
+    if (checkOperatorInput == true)
     {
         ui->e_expressionInput->clear();
         checkOperatorInput = false;
     }
 
     ui->e_expressionInput->setText(ui->e_expressionInput->text()  + numButton->text());
-
-    percentActive = false;
 }
 
 void Calculator::dotInput()
@@ -93,13 +89,13 @@ void Calculator::dotInput()
 void Calculator::unaryOpearation()
 {
     QPushButton *unarOpButton = (QPushButton*)sender();
-    double unaryActionNum = 0.0;
+    saveRightOperand = ui->e_expressionInput->text().toDouble();
 
     if (unarOpButton->text() == "%")
-        unaryActionNum = (ui->e_expressionInput->text().toDouble()) * 0.01;
+        saveRightOperand = (ui->e_expressionInput->text().toDouble()) * 0.01;
 
     if (unarOpButton->text() == "+-")
-        unaryActionNum = (ui->e_expressionInput->text().toDouble()) * (-1);
+        saveRightOperand = (ui->e_expressionInput->text().toDouble()) * (-1);
 
     if (unarOpButton->text() == "1/x")
     {
@@ -109,11 +105,11 @@ void Calculator::unaryOpearation()
             return;
         }
         else
-            unaryActionNum = 1.0 / (ui->e_expressionInput->text().toDouble());
+            saveRightOperand = 1.0 / (ui->e_expressionInput->text().toDouble());
     }
 
     if (unarOpButton->text() == "x^2")
-        unaryActionNum = pow(ui->e_expressionInput->text().toDouble(), 2);
+        saveRightOperand = pow(ui->e_expressionInput->text().toDouble(), 2);
 
     if (unarOpButton->text() == "sqrt")
     {
@@ -122,21 +118,53 @@ void Calculator::unaryOpearation()
             wrongAction();
             return;
         }
-        unaryActionNum = sqrt(ui->e_expressionInput->text().toDouble());
+        saveRightOperand = sqrt(ui->e_expressionInput->text().toDouble());
     }
 
-    QString numString = QString::number(unaryActionNum, 'g', 15);
-    ui->e_expressionInput->setText(numString);
+    ui->e_expressionInput->setText(QString::number(saveRightOperand));
+    checkOperatorInput = true;
 }
 
-void Calculator::additiveOperation()
+void Calculator::inMemoryOperation()
 {
+    QPushButton *operationButton = (QPushButton*)sender();
+    saveRightOperand = ui->e_expressionInput->text().toDouble();
 
+    if (saveLastOperation.isEmpty() == false)
+    {
+        if (calculateOperation(saveRightOperand, saveLastOperation) == false)
+        {
+            wrongAction();
+            return;
+        }
+        ui->e_expressionOutput->setText(ui->e_expressionOutput->text() + ui->e_expressionInput->text()+ operationButton->text());
+        ui->e_expressionInput->setText(QString::number(saveLeftOperand));
+        saveLastOperation = operationButton->text();
+        checkOperatorInput = true;
+        return;
+    }
+
+    saveLeftOperand = ui->e_expressionInput->text().toDouble();
+    saveLastOperation = operationButton->text();
+    ui->e_expressionOutput->setText(ui->e_expressionInput->text() + operationButton->text());
+    checkOperatorInput = true;
 }
 
-void Calculator::multiplicativeOperation()
+bool Calculator::calculateOperation(double rightOperand, QString opButton)
 {
-
+    if (opButton == '+')
+        saveLeftOperand += rightOperand;
+    if (opButton == '-')
+        saveLeftOperand -= rightOperand;
+    if (opButton == '*')
+        saveLeftOperand *= rightOperand;
+    if (opButton == '/')
+    {
+        if (rightOperand == 0)
+            return false;
+        saveLeftOperand /= rightOperand;
+    }
+    return true;
 }
 
 void Calculator::wrongAction()
@@ -147,7 +175,30 @@ void Calculator::wrongAction()
 
 void Calculator::expressionResult()
 {
+    QPushButton *equalButton = (QPushButton*)sender();
+    saveRightOperand = ui->e_expressionInput->text().toDouble();
 
+    if (saveLastOperation.isEmpty() == false)
+    {
+        if (calculateOperation(saveRightOperand, saveLastOperation) == false)
+        {
+            wrongAction();
+            return;
+        }
+        ui->e_expressionOutput->setText(QString::number(saveLeftOperand));
+        ui->e_expressionInput->setText(QString::number(saveLeftOperand));
+
+        saveLeftOperand = 0.0;
+        saveRightOperand = 0.0;
+        saveLastOperation.clear();
+        checkOperatorInput = true;
+        return;
+    }
+
+    saveLeftOperand = ui->e_expressionInput->text().toDouble();
+    saveLastOperation = equalButton->text();
+    ui->e_expressionOutput->setText(ui->e_expressionInput->text() + equalButton->text());
+    checkOperatorInput = true;
 }
 
 void Calculator::clearLabel()
@@ -157,6 +208,10 @@ void Calculator::clearLabel()
     if (clearButton->text() == "AC")
     {
         ui->e_expressionInput->setText("");
+        ui->e_expressionOutput->setText("");
+        saveLeftOperand = 0.0;
+        saveRightOperand = 0.0;
+        saveLastOperation.clear();
         checkOperatorInput = true;
     }
 
@@ -166,10 +221,8 @@ void Calculator::clearLabel()
         if (ui->e_expressionInput->text().isEmpty())
         {
             ui->e_expressionInput->setText("");
+            ui->e_expressionOutput->setText("");
             checkOperatorInput = true;
         }
     }
 }
-
-
-

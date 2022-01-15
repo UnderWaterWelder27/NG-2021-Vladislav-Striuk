@@ -19,18 +19,18 @@ public:
 private:
     Ui::Calculator *ui;
 
-    double leftOperand;
-    double rightOperand;
+    double saveLeftOperand;
+    double saveRightOperand;
     bool checkOperatorInput;
-    bool percentActive;
+    QString saveLastOperation;
 
 private slots:
     void numInput();
     void dotInput();
 
     void unaryOpearation();
-    void additiveOperation();
-    void multiplicativeOperation();
+    void inMemoryOperation();
+    bool calculateOperation(double rightOperand, QString opButton);
 
     void wrongAction();
     void expressionResult();
