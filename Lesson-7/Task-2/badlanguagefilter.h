@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QString>
-#include <QTextCursor>
+#include <QCursor>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class BadLanguageFilter; }

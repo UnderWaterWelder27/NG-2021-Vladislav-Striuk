@@ -6,7 +6,6 @@ BadLanguageFilter::BadLanguageFilter(QWidget *parent)
     , ui(new Ui::BadLanguageFilter)
 {
     ui->setupUi(this);
-
     connect (ui->e_badLanguageDestroyer, &QTextEdit::textChanged, this, &BadLanguageFilter::changeBadToStar);
 }
 
@@ -17,12 +16,21 @@ BadLanguageFilter::~BadLanguageFilter()
 
 void BadLanguageFilter::changeBadToStar()
 {
-    QTextEdit *inputText = ui->e_badLanguageDestroyer;
-    QChar c = inputText->toPlainText().back();
-    ui->l_editProcess->setText(c);
+    QString userInputText = ui->e_badLanguageDestroyer->toPlainText();
+    if (userInputText.indexOf("fuck", 0, Qt::CaseInsensitive) == -1) {
+        return;
+    }
+    userInputText.replace("fuck", "****", Qt::CaseInsensitive);
 
-    //ui->e_badLanguageDestroyer->insertPlainText("___");
-    //ui->e_badLanguageDestroyer->setText("___");
-    //ui->e_badLanguageDestroyer->setPlainText("___");
+    int cursorPosition = ui->e_badLanguageDestroyer->textCursor().position();               // save last cursor position
+
+    disconnect (ui->e_badLanguageDestroyer, &QTextEdit::textChanged, this, &BadLanguageFilter::changeBadToStar);
+    ui->e_badLanguageDestroyer->setText(userInputText);
+    connect (ui->e_badLanguageDestroyer, &QTextEdit::textChanged, this, &BadLanguageFilter::changeBadToStar);
+
+    QTextCursor cursor = ui->e_badLanguageDestroyer->textCursor();                          // take text cursor
+    cursor.setPosition(cursorPosition);                                                     // set position to last saved
+    ui->e_badLanguageDestroyer->setTextCursor(cursor);                                      // set cursor in text
+
 }
 
