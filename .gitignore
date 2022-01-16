@@ -11,7 +11,7 @@
 *.dll
 
 # Qt project files
-*.pro
+*.user
 
 # Desktop file
 *.ini
