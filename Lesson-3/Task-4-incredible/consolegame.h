@@ -10,9 +10,14 @@ public:
 
     void worldGeneration();
     void showUndiscoveredWorld();
+
     void playerPosition();
     void playerKeyAction();
+
     void resourceMining();
+    void resourcePlacing(char availableItem);
+    void placeItemInHand();
+
     void openInventory();
     void openCraftMenu();
     void showGameManual();
@@ -24,14 +29,16 @@ protected:
 
     char generalMap [WORLD_SIZE_Y][WORLD_SIZE_X];                       // main map
     char playerMap [WORLD_SIZE_Y][WORLD_SIZE_X];                        // visible map
-    char playerActionInput;
 
+    char playerActionInput;
     int playerPosX;
     int playerPosY;
 
     int itemStick;
     int itemWood;
     int itemStone;
+
+    char itemInHand;
 };
 
 #endif // CONSOLEGAME_H
