@@ -5,7 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         consolegame.cpp \
+        gamemanual.cpp \
         main.cpp
 
 HEADERS += \
-    consolegame.h
+    consolegame.h \
+    gamemanual.h

@@ -72,5 +72,7 @@ void ConsoleGame::playerKeyAction()
     case 's': if (generalMap[playerPosY+1][playerPosX] == ' ') playerPosY++; break;             //movement to down
     case 'd': if (generalMap[playerPosY][playerPosX+1] == ' ') playerPosX++; break;             //movement to right
     case 'a': if (generalMap[playerPosY][playerPosX-1] == ' ') playerPosX--; break;             //movement to left
+
+    case 'm': GameManual::keybindsInformation(); break;
     }
 }

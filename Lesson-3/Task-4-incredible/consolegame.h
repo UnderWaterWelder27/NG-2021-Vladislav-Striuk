@@ -1,7 +1,9 @@
 #ifndef CONSOLEGAME_H
 #define CONSOLEGAME_H
 
-class ConsoleGame
+#include "gamemanual.h"
+
+class ConsoleGame : public GameManual
 {
 
 public:
