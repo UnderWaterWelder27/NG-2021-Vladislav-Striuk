@@ -13,9 +13,9 @@ ConsoleGame::ConsoleGame()
     playerPosX = WORLD_SIZE_X / 2;
     playerPosY = WORLD_SIZE_Y / 2;
 
-    sticks = 0;
-    wood = 0;
-    stone = 0;
+    itemStick = 0;
+    itemWood = 0;
+    itemStone = 0;
 }
 
 void ConsoleGame::worldGeneration()
@@ -77,39 +77,77 @@ void ConsoleGame::playerKeyAction()
     case 'd': if (generalMap[playerPosY][playerPosX+1] == ' ') playerPosX++; break;             //movement to right
     case 'a': if (generalMap[playerPosY][playerPosX-1] == ' ') playerPosX--; break;             //movement to left
 
-    case 'm': keybindsInformation(); break;
+    case 'm': showGameManual(); break;
     case 'i': openInventory(); break;
-    //case 'e': mineResource(); break;
+    case 'e': resourceMining(); break;
+    case 'c': openCraftMenu(); break;
     }
+}
+
+void ConsoleGame::resourceMining()
+{
+    for (int y = playerPosY - 1; y <= playerPosY + 1; y++) {
+        for (int x = playerPosX - 1; x <= playerPosX + 1; x++) {
+            if (y < WORLD_SIZE_Y && x < WORLD_SIZE_X && y >= 0 && x >= 0) {
+                if (playerMap[y][x] == 't') {
+                    itemStick++;
+                    generalMap[y][x] = ' ';
+                }
+                if (playerMap[y][x] == 'T') {
+                    itemWood++;
+                    generalMap[y][x] = 't';
+                }
+            }
+        }
+    }
+    system("cls");
 }
 
 void ConsoleGame::openInventory()
 {
     system("cls");
-    cout << "INVENTORY" << endl << endl
-            << "Stick - " << getSticksCount() << endl
-            << "Wood - " << getWoodCount() << endl
-            << "Stone - " << getStoneCount() << endl << endl;
+    cout << "INVENTORY" << endl << endl;
+    cout << "Materials:" << endl;
+    if (itemStick > 0) { cout << "Stick - " << itemStick << endl; }
+    if (itemWood > 0) { cout << "Wood - " << itemWood << endl; }
+    if (itemStone > 0) { cout << "Stone - " << itemStone << endl ; }
 
-    cout << "Press any key to close this tab";
-    _getch();
-    system("cls");
+    cout << endl << "Items:" << endl;
+
+    closeTab();
 }
 
-void ConsoleGame::keybindsInformation()
+void ConsoleGame::openCraftMenu()
+{
+    system("cls");
+    cout << "CRAFT MENU" << endl
+         << "Choose, what do you wnat ot craft:" << endl << endl;
+
+    if (itemStick >= 6 && itemWood >= 4) {
+        cout << "1. Wooden pickaxe | Cost: 6 stick, 4 wood" << endl;
+    }
+
+    closeTab();
+}
+
+void ConsoleGame::showGameManual()
 {
     system("cls");
 
-    std::cout << "You can open this manual everywhere, by presing 'm'" << std::endl << std::endl;
-    std::cout << "KEYBOARD SHORTCUTS:" << std::endl
-            << "w - move up" << std::endl
-            << "s - move down" << std::endl
-            << "a - move left" << std::endl
-            << "d - move right" << std::endl
-            << "m - game manual" << std::endl
-            << "i - player inventory" << std::endl << std::endl;
-    std::cout << "Press any key to close this tab";
+    cout << "You can open this manual everywhere, by presing 'm'" << endl << endl;
+    cout << "KEYBOARD SHORTCUTS:" << endl
+         << "w, a, s, d - movement" << endl
+         << "m - game manual" << endl
+         << "i - player inventory" << endl
+         << "e - to mine" << endl
+         << "c - to craft" << endl;
 
+    closeTab();
+}
+
+void ConsoleGame::closeTab()
+{
+    cout << endl <<"Press any key to close this tab";
     _getch();
     system("cls");
 }

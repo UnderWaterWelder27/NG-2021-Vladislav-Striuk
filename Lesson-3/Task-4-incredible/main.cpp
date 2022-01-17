@@ -5,7 +5,7 @@ int main()
 {
     ConsoleGame mainGame;
 
-    mainGame.keybindsInformation();
+    mainGame.showGameManual();
     mainGame.worldGeneration();
     while (true)
     {

@@ -12,16 +12,11 @@ public:
     void showUndiscoveredWorld();
     void playerPosition();
     void playerKeyAction();
+    void resourceMining();
     void openInventory();
-    void keybindsInformation();
-
-    void setSticksCount(int fStick) { sticks = fStick; }
-    void setWoodCount(int fWood) { wood = fWood; }
-    void setStoneCount(int fStone) { stone = fStone; }
-
-    int getSticksCount() { return sticks; }
-    int getWoodCount() { return wood; }
-    int getStoneCount() { return stone; }
+    void openCraftMenu();
+    void showGameManual();
+    void closeTab();
 
 protected:
     static const int WORLD_SIZE_X = 100;
@@ -34,9 +29,9 @@ protected:
     int playerPosX;
     int playerPosY;
 
-    int sticks;
-    int wood;
-    int stone;
+    int itemStick;
+    int itemWood;
+    int itemStone;
 };
 
 #endif // CONSOLEGAME_H
