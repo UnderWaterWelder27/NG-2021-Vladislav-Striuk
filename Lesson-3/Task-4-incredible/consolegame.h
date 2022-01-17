@@ -1,7 +1,6 @@
 #ifndef CONSOLEGAME_H
 #define CONSOLEGAME_H
 
-
 class ConsoleGame
 {
 
@@ -10,8 +9,11 @@ public:
 
     void worldGeneration();
     void showUndiscoveredWorld();
-    void showPlayerPosition();
-    void playerMovement();
+    void playerPosition();
+    void playerKeyAction();
+
+    int getPlayerPosX() { return playerPosX; }
+    int getPlayerPosY() { return playerPosY; }
 
 private:
     static const int WORLD_SIZE_X = 100;
@@ -23,7 +25,6 @@ private:
 
     int playerPosX;
     int playerPosY;
-
 };
 
 #endif // CONSOLEGAME_H
