@@ -5,13 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         consolegame.cpp \
-        gamemanual.cpp \
-        main.cpp \
-        playerinventory.cpp \
-        resourcemining.cpp
+        main.cpp
 
 HEADERS += \
-    consolegame.h \
-    gamemanual.h \
-    playerinventory.h \
-    resourcemining.h
+    consolegame.h

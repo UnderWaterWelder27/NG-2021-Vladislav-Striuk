@@ -1,13 +1,11 @@
 #include "consolegame.h"
-#include "gamemanual.h"
 
 
 int main()
 {
     ConsoleGame mainGame;
-    GameManual help;
 
-    help.keybindsInformation();
+    mainGame.keybindsInformation();
     mainGame.worldGeneration();
     while (true)
     {

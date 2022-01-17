@@ -1,12 +1,8 @@
 #ifndef CONSOLEGAME_H
 #define CONSOLEGAME_H
 
-#include "gamemanual.h"
-#include "playerinventory.h"
-#include "resourcemining.h"
 
-
-class ConsoleGame : public GameManual, PlayerInventory
+class ConsoleGame
 {
 
 public:
@@ -16,11 +12,18 @@ public:
     void showUndiscoveredWorld();
     void playerPosition();
     void playerKeyAction();
+    void openInventory();
+    void keybindsInformation();
 
-    int getPlayerPosX() { return playerPosX; }
-    int getPlayerPosY() { return playerPosY; }
+    void setSticksCount(int fStick) { sticks = fStick; }
+    void setWoodCount(int fWood) { wood = fWood; }
+    void setStoneCount(int fStone) { stone = fStone; }
 
-private:
+    int getSticksCount() { return sticks; }
+    int getWoodCount() { return wood; }
+    int getStoneCount() { return stone; }
+
+protected:
     static const int WORLD_SIZE_X = 100;
     static const int WORLD_SIZE_Y = 20;
 
@@ -30,6 +33,10 @@ private:
 
     int playerPosX;
     int playerPosY;
+
+    int sticks;
+    int wood;
+    int stone;
 };
 
 #endif // CONSOLEGAME_H
