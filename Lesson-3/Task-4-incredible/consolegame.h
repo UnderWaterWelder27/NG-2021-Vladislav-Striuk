@@ -2,8 +2,11 @@
 #define CONSOLEGAME_H
 
 #include "gamemanual.h"
+#include "playerinventory.h"
+#include "resourcemining.h"
 
-class ConsoleGame : public GameManual
+
+class ConsoleGame : public GameManual, PlayerInventory
 {
 
 public:

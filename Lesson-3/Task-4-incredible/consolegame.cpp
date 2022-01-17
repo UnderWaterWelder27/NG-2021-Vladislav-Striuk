@@ -1,4 +1,6 @@
 #include "consolegame.h"
+#include "playerinventory.h"
+#include "resourcemining.h"
 
 #include <iostream>
 #include <random>
@@ -74,5 +76,6 @@ void ConsoleGame::playerKeyAction()
     case 'a': if (generalMap[playerPosY][playerPosX-1] == ' ') playerPosX--; break;             //movement to left
 
     case 'm': GameManual::keybindsInformation(); break;
+    case 'i': PlayerInventory::openInventory(); break;
     }
 }
