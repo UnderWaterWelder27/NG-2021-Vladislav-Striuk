@@ -18,6 +18,7 @@ ConsoleGame::ConsoleGame()
     stoneCount = 0;
 
     woodenPickaxeAvailable = false;
+    stonePickaxeAvailable = false;
 
     itemInHand = ' ';
 }
@@ -96,8 +97,8 @@ void ConsoleGame::resourceMining()
                 switch (playerMap[y][x]) {
                     case 'T': woodCount += 2; generalMap[y][x] = 't'; break;
                     case 't': stickCount += 1; generalMap[y][x] = ' '; break;
-                    case 'S': stoneCount += 2; generalMap[y][x] = 's'; break;
-                    case 's': stoneCount += 1; generalMap[y][x] = ' '; break;
+                    case 'S': if (woodenPickaxeAvailable) { stoneCount += 2; generalMap[y][x] = 's'; } break;
+                    case 's': if (woodenPickaxeAvailable) { stoneCount += 1; generalMap[y][x] = ' '; } break;
                 }
             }
         }
@@ -134,7 +135,8 @@ void ConsoleGame::openInventory()
     cout << "1. "; if (stickCount > 0) { cout << "Stick - " << stickCount; } cout << endl;
     cout << "2. "; if (woodCount > 0) { cout << "Wood - " << woodCount; } cout << endl;
     cout << "3. "; if (stoneCount > 0) { cout << "Stone - " << stoneCount; } cout << endl;
-    cout << "4. "; if (woodenPickaxeAvailable) { cout << "Wooden Pickaxe - available" << endl;}
+    cout << "4. "; if (woodenPickaxeAvailable) { cout << "Wooden Pickaxe - available"; } cout << endl;
+    cout << "5. "; if (stonePickaxeAvailable) { cout << "Stone Pickaxe - available"; } cout << endl;
 
     cout << endl << "Y - put an item in hand ? >";
     if (_getch() == 'y') {
@@ -150,12 +152,16 @@ void ConsoleGame::openCraftMenu()
 {
     cout << "CRAFT MENU" << endl
          << "Choose, what do you want ot craft:" << endl << endl;
-    if (stickCount >= 6 && woodCount >= 4) {
-        cout << "1. Wooden pickaxe | Cost: 6 stick, 4 wood" << endl;
-    }
+    if (stickCount >= 12 && woodCount >= 20 && woodenPickaxeAvailable == false)
+        cout << "1. Wooden pickaxe | Cost: 12 stick, 20 wood" << endl;
+
+    if (stickCount >= 12 && stoneCount >= 20 && stonePickaxeAvailable == false)
+        cout << "2. Stone pickaxe | Cost: 12 stick, 20 stone" << endl;
+
     cout << ">";
     switch (_getch()) {
-        case '1': woodenPickaxeAvailable = true; break;
+        case '1': stickCount -= 12; woodCount -= 20; woodenPickaxeAvailable = true; break;
+        case '2': stickCount -= 12; stoneCount -= 20; stonePickaxeAvailable = true; break;
     }
     system("cls");
 }

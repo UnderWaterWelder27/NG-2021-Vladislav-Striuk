@@ -39,6 +39,7 @@ protected:
     int stoneCount;
 
     bool woodenPickaxeAvailable;
+    bool stonePickaxeAvailable;
 
     char itemInHand;
 };
