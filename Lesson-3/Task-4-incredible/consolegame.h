@@ -8,11 +8,21 @@ class ConsoleGame
 public:
     ConsoleGame();
 
+    static const int WORLD_SIZE_X = 100;
+    static const int WORLD_SIZE_Y = 20;
+
+    char savannahWorld [WORLD_SIZE_Y][WORLD_SIZE_X];                           // main map
+    char playerSavannahMap [WORLD_SIZE_Y][WORLD_SIZE_X];                     // visible general map
+    char caveWorld [WORLD_SIZE_Y][WORLD_SIZE_X];
+    char playerCaveWorld [WORLD_SIZE_Y][WORLD_SIZE_X];
+
     void worldGeneration();
     void showUndiscoveredWorld();
+    char changeWorld();
 
     void playerPosition();
-    void playerKeyAction();
+    void playerKeyAction(char (*worldArray)[WORLD_SIZE_X]);
+    bool takeStepOportunity(char nextCell);
 
     void resourceMining();
     void resourcePlacing(char availableItem);
@@ -23,14 +33,11 @@ public:
     void showGameManual();
     void closeTab();
 
-protected:
-    static const int WORLD_SIZE_X = 100;
-    static const int WORLD_SIZE_Y = 20;
+    char *getSavannahWorld() { return *savannahWorld;}
 
-    char generalMap [WORLD_SIZE_Y][WORLD_SIZE_X];                           // main map
-    char caveMap [WORLD_SIZE_Y][WORLD_SIZE_X];                              // main map
-    char playerGeneralMap [WORLD_SIZE_Y][WORLD_SIZE_X];                     // visible general map
-    char playerCaveMap [WORLD_SIZE_Y][WORLD_SIZE_X];                       // visible general map
+protected:
+
+    char currentWorld;
 
     char playerActionInput;
     int playerPosX;

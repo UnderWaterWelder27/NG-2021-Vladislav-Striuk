@@ -12,6 +12,7 @@ ConsoleGame::ConsoleGame()
     playerActionInput = ' ';
     playerPosX = WORLD_SIZE_X / 2;
     playerPosY = WORLD_SIZE_Y / 2;
+    currentWorld = '1';
 
     stickCount = 0;
     woodCount = 0;
@@ -29,32 +30,21 @@ void ConsoleGame::worldGeneration()
     for (int y = 0; y < WORLD_SIZE_Y; y++) {
         for (int x = 0; x < WORLD_SIZE_X; x++) {
             if (y == WORLD_SIZE_Y - 1 || x == WORLD_SIZE_X - 1 || y == 0 || x == 0) {
-                generalMap[y][x] = '/';
-                if (y == WORLD_SIZE_Y - 1 && x == (WORLD_SIZE_X - 1)/2) {
-                    generalMap[y][x] = 'O';
+                savannahWorld[y][x] = '/';                                     //inaccessible frame
+                if (currentWorld == '1' && (y == WORLD_SIZE_Y - 1 && x == (WORLD_SIZE_X - 1)/2)) {
+                    savannahWorld[y][x] = 'O';
                 }
-                                                                            //inaccessible frame
-                caveMap[y][x] = '/';
             }
             else {
                 switch(rand()%23) {
-                case 1:  generalMap[y][x] = 'T'; break;                     //trees
-                case 2:  generalMap[y][x] = 't'; break;                     //small trees
-                case 3:  generalMap[y][x] = 'S'; break;                     //stones
-                case 4:  generalMap[y][x] = 's'; break;                     //small stones
-                default: generalMap[y][x] = ' ';                            //empty field
-                }
-
-                switch(rand()%26) {
-                case 1:  caveMap[y][x] = 'I'; break;                        //iron ore
-                case 2:  caveMap[y][x] = 'i'; break;                        //small iron ore
-                case 3:  caveMap[y][x] = 'D'; break;                        //diamond ore
-                case 4:  caveMap[y][x] = 'd'; break;                        //small diamond ore
-                default: caveMap[y][x] = ' ';                               //empty field
+                case 1:  savannahWorld[y][x] = 'T'; break;                     //trees
+                case 2:  savannahWorld[y][x] = 't'; break;                     //small trees
+                case 3:  savannahWorld[y][x] = 'S'; break;                     //stones
+                case 4:  savannahWorld[y][x] = 's'; break;                     //small stones
+                default: savannahWorld[y][x] = ' ';                            //empty field
                 }
             }
-            playerGeneralMap[y][x] = '*';                                          //map fog
-            playerCaveMap[y][x] = '*';
+            playerSavannahMap[y][x] = '*';                                          //map fog
         }
     }
 }
@@ -64,12 +54,19 @@ void ConsoleGame::showUndiscoveredWorld()
     for (int y = playerPosY - 2; y <= playerPosY + 2; y++) {
         for (int x = playerPosX - 2; x <= playerPosX + 2; x++) {
             if (y < WORLD_SIZE_Y && x < WORLD_SIZE_X && y >= 0 && x >= 0) {
-                playerGeneralMap[y][x] = generalMap[y][x];
-                playerCaveMap[y][x] = caveMap[y][x];
+                playerSavannahMap[y][x] = savannahWorld[y][x];
             }
         }
     }
     system("cls");
+}
+
+char ConsoleGame::changeWorld()
+{
+    if (currentWorld == '1' && (playerPosY == WORLD_SIZE_Y - 1 && playerPosX == (WORLD_SIZE_X - 1)/2)) {
+        return '2';
+    }
+    return '1';
 }
 
 void ConsoleGame::playerPosition()
@@ -80,21 +77,21 @@ void ConsoleGame::playerPosition()
                 cout << "@";
             }
             else {
-                cout << playerGeneralMap[y][x];
+                cout << playerSavannahMap[y][x];
             }
         } cout << endl;
     }
 }
 
-void ConsoleGame::playerKeyAction()
+void ConsoleGame::playerKeyAction(char (*worldArray)[WORLD_SIZE_X])
 {
     cout << ">";
     playerActionInput = _getch();
     switch(playerActionInput) {
-        case 'w': if (generalMap[playerPosY-1][playerPosX] == ' ' || generalMap[playerPosY-1][playerPosX] == 'O') { playerPosY--; } break;
-        case 's': if (generalMap[playerPosY+1][playerPosX] == ' ' || generalMap[playerPosY+1][playerPosX] == 'O') { playerPosY++; } break;
-        case 'd': if (generalMap[playerPosY][playerPosX+1] == ' ' || generalMap[playerPosY][playerPosX+1] == 'O') { playerPosX++; } break;
-        case 'a': if (generalMap[playerPosY][playerPosX-1] == ' ' || generalMap[playerPosY][playerPosX-1] == 'O') { playerPosX--; } break;
+        case 'w': if (takeStepOportunity(worldArray[playerPosY-1][playerPosX])) { playerPosY--; } break;
+        case 's': if (takeStepOportunity(worldArray[playerPosY+1][playerPosX])) { playerPosY++; } break;
+        case 'd': if (takeStepOportunity(worldArray[playerPosY][playerPosX+1])) { playerPosX++; } break;
+        case 'a': if (takeStepOportunity(worldArray[playerPosY][playerPosX-1])) { playerPosX--; } break;
 
         case 'e': resourceMining(); break;
         case 'q': resourcePlacing(itemInHand); break;
@@ -104,16 +101,25 @@ void ConsoleGame::playerKeyAction()
     }
 }
 
+bool ConsoleGame::takeStepOportunity(char nextCell)
+{
+    switch (nextCell) {
+        case ' ': return true; break;
+        case 'O': return true; break;
+        default: return false; break;
+    }
+}
+
 void ConsoleGame::resourceMining()
 {
     for (int y = playerPosY - 1; y <= playerPosY + 1; y++) {
         for (int x = playerPosX - 1; x <= playerPosX + 1; x++) {
             if (y < WORLD_SIZE_Y && x < WORLD_SIZE_X && y >= 0 && x >= 0) {
-                switch (playerGeneralMap[y][x]) {
-                    case 'T': woodCount += 2; generalMap[y][x] = 't'; break;
-                    case 't': stickCount += 1; generalMap[y][x] = ' '; break;
-                    case 'S': if (woodenPickaxeAvailable) { stoneCount += 2; generalMap[y][x] = 's'; } break;
-                    case 's': if (woodenPickaxeAvailable) { stoneCount += 1; generalMap[y][x] = ' '; } break;
+                switch (playerSavannahMap[y][x]) {
+                    case 'T': woodCount += 2; savannahWorld[y][x] = 't'; break;
+                    case 't': stickCount += 1; savannahWorld[y][x] = ' '; break;
+                    case 'S': if (woodenPickaxeAvailable) { stoneCount += 2; savannahWorld[y][x] = 's'; } break;
+                    case 's': if (woodenPickaxeAvailable) { stoneCount += 1; savannahWorld[y][x] = ' '; } break;
                 }
             }
         }
@@ -131,8 +137,8 @@ void ConsoleGame::resourcePlacing(char availableItem)
         case 'S': if (stoneCount == 0) { return; }; stoneCount--; break;
     }
 
-    generalMap[playerPosY][playerPosX] = availableItem;
-    playerGeneralMap[playerPosY][playerPosX] = generalMap[playerPosY][playerPosX];
+    savannahWorld[playerPosY][playerPosX] = availableItem;
+    playerSavannahMap[playerPosY][playerPosX] = savannahWorld[playerPosY][playerPosX];
 }
 
 void ConsoleGame::placeItemInHand()

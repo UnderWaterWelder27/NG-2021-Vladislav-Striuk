@@ -7,11 +7,12 @@ int main()
 
     mainGame.showGameManual();
     mainGame.worldGeneration();
-    while (true)
-    {
+
+    while (mainGame.changeWorld() == '1') {
         mainGame.showUndiscoveredWorld();
         mainGame.playerPosition();
-        mainGame.playerKeyAction();
+        mainGame.playerKeyAction(mainGame.playerSavannahMap);
     }
+
     return 0;
 }
