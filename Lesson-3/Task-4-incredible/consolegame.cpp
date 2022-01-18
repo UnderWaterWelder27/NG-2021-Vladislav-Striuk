@@ -41,19 +41,22 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
                     worldArray[y][x] = 'O';
                 }
                 else {
-                     worldArray[y][x] = '/';                                //inaccessible frame
+                     worldArray[y][x] = '/';
                 }
             }
             else {
                 switch(rand()%23) {
-                case 1:  worldArray[y][x] = o1; break;                     //trees
-                case 2:  worldArray[y][x] = o2; break;                     //small trees
-                case 3:  worldArray[y][x] = o3; break;                     //stones
-                case 4:  worldArray[y][x] = o4; break;                     //small stones
-                default: worldArray[y][x] = ' ';                            //empty field
+                case 1:  worldArray[y][x] = o1; break;
+                case 2:  worldArray[y][x] = o2; break;
+                case 3:  worldArray[y][x] = o3; break;
+                case 4:  worldArray[y][x] = o4; break;
+                default: worldArray[y][x] = ' ';
                 }
             }
-            playerWorldArray[y][x] = '*';                                          //map fog
+            for (int clearWay = WORLD_SIZE_Y - 2; clearWay > (WORLD_SIZE_Y/3)*2; clearWay--) {
+                worldArray[clearWay][(WORLD_SIZE_X - 1)/2] = ' ';
+            }
+            playerWorldArray[y][x] = '*';
         }
     }
 }
@@ -174,16 +177,16 @@ void ConsoleGame::placeItemInHand()
 void ConsoleGame::openInventory()
 {
     cout << "INVENTORY" << endl << endl;
-    cout << "1. "; if (stickCount > 0) { cout << "Stick - " << stickCount; } cout << endl;
-    cout << "2. "; if (woodCount > 0) { cout << "Wood - " << woodCount; } cout << endl;
-    cout << "3. "; if (stoneCount > 0) { cout << "Stone - " << stoneCount; } cout << endl;
-    cout << "4. "; if (ironCount > 0) { cout << "Iron - " << ironCount; } cout << endl;
-    cout << "5. "; if (diamondCount > 0) { cout << "Diamond - " << diamondCount; } cout << endl;
+    cout << "1. "; if (stickCount > 0)      { cout << "Stick    - " << stickCount; } cout << endl;
+    cout << "2. "; if (woodCount > 0)       { cout << "Wood     - " << woodCount; } cout << endl;
+    cout << "3. "; if (stoneCount > 0)      { cout << "Stone    - " << stoneCount; } cout << endl;
+    cout << "4. "; if (ironCount > 0)       { cout << "Iron     - " << ironCount; } cout << endl;
+    cout << "5. "; if (diamondCount > 0)    { cout << "Diamond  - " << diamondCount; } cout << endl;
 
-    cout << "6. "; if (woodenPickaxeAvailable) { cout << "Wooden Pickaxe - available"; } cout << endl;
-    cout << "7. "; if (stonePickaxeAvailable) { cout << "Stone Pickaxe - available"; } cout << endl;
-    cout << "8. "; if (ironPickaxeAvailable) { cout << "Iron Pickaxe - available"; } cout << endl;
-    cout << "9. "; if (diamondSuperLegendaryMegaSwordAvailable) { cout << "Super Legendary Mega Sword - available"; } cout << endl;
+    cout << "6. "; if (woodenPickaxeAvailable) { cout << "Wooden Pickaxe                                - available"; } cout << endl;
+    cout << "7. "; if (stonePickaxeAvailable) { cout << "Stone Pickaxe                                  - available"; } cout << endl;
+    cout << "8. "; if (ironPickaxeAvailable) { cout << "Iron Pickaxe                                    - available"; } cout << endl;
+    cout << "9. "; if (diamondSuperLegendaryMegaSwordAvailable) { cout << "Super Legendary Mega Sword   - available"; } cout << endl;
 
     cout << endl << "Y - put an item in hand ? >";
     if (_getch() == 'y') {
@@ -200,15 +203,23 @@ void ConsoleGame::openCraftMenu()
     cout << "CRAFT MENU" << endl
          << "Choose, what do you want ot craft:" << endl << endl;
     if (stickCount >= 6 && woodCount >= 20 && woodenPickaxeAvailable == false)
-        cout << "1. Wooden pickaxe | Cost: 12 stick, 20 wood" << endl;
+        cout << "1. Wooden pickaxe                  | Cost: 6 stick, 20 wood" << endl;
 
     if (stickCount >= 6 && stoneCount >= 20 && stonePickaxeAvailable == false)
-        cout << "2. Stone pickaxe | Cost: 12 stick, 20 stone" << endl;
+        cout << "2. Stone pickaxe                   | Cost: 6 stick, 20 stone" << endl;
+
+    if (stickCount >= 6 && ironCount >= 30 && ironPickaxeAvailable == false)
+        cout << "3. Iron pickaxe                    | Cost: 6 stick, 30 iron" << endl;
+
+    if (stickCount >= 6 && diamondCount >= 50 && diamondSuperLegendaryMegaSwordAvailable == false)
+        cout << "4. Super Legendary Mega Sword      | Cost: 6 stick, 50 diamond" << endl;
 
     cout << ">";
     switch (_getch()) {
         case '1': stickCount -= 6; woodCount -= 20; woodenPickaxeAvailable = true; break;
         case '2': stickCount -= 6; stoneCount -= 20; stonePickaxeAvailable = true; break;
+        case '3': stickCount -= 6; ironCount -= 30; ironPickaxeAvailable = true; break;
+        case '4': stickCount -= 6; diamondCount -= 50; diamondSuperLegendaryMegaSwordAvailable = true; break;
     }
     system("cls");
 }
