@@ -128,10 +128,14 @@ void ConsoleGame::resourceMining(char (*worldArray)[WORLD_SIZE_X])
         for (int x = playerPosX - 1; x <= playerPosX + 1; x++) {
             if (y < WORLD_SIZE_Y && x < WORLD_SIZE_X && y >= 0 && x >= 0) {
                 switch (worldArray[y][x]) {
-                    case 'T': woodCount += 2; worldArray[y][x] = 't'; break;
+                    case 'T': woodCount += 1; worldArray[y][x] = ' '; break;
                     case 't': stickCount += 1; worldArray[y][x] = ' '; break;
-                    case 'S': if (woodenPickaxeAvailable) { stoneCount += 2; worldArray[y][x] = 's'; } break;
+                    case 'S': if (woodenPickaxeAvailable) { stoneCount += 2; worldArray[y][x] = ' '; } break;
                     case 's': if (woodenPickaxeAvailable) { stoneCount += 1; worldArray[y][x] = ' '; } break;
+                    case 'I': if (stonePickaxeAvailable) { ironCount += 2; worldArray[y][x] = ' '; } break;
+                    case 'i': if (stonePickaxeAvailable) { ironCount += 1; worldArray[y][x] = ' '; } break;
+                    case 'D': if (ironPickaxeAvailable) { diamondCount += 2; worldArray[y][x] = ' '; } break;
+                    case 'd': if (ironPickaxeAvailable) { diamondCount += 1; worldArray[y][x] = ' '; } break;
                 }
             }
         }
@@ -146,9 +150,11 @@ void ConsoleGame::resourcePlacing(char availableItem, char (*worldArray)[WORLD_S
     switch (availableItem) {
         case 't': if (stickCount == 0) { return; } stickCount--; break;
         case 'T': if (woodCount == 0) { return; }; woodCount--; break;
-        case 'S': if (stoneCount == 0) { return; }; stoneCount--; break;
+        case 'S': if (stoneCount == 1) { return; }; stoneCount -= 2; break;
+        case 'I': if (ironCount <= 1) { return; }; ironCount -= 2; break;
+        case 'D': if (diamondCount <= 1) { return; }; diamondCount -= 2; break;
+        default: return;
     }
-
     worldArray[playerPosY][playerPosX] = availableItem;
     playerWorldArray[playerPosY][playerPosX] = worldArray[playerPosY][playerPosX];
 }
@@ -159,6 +165,9 @@ void ConsoleGame::placeItemInHand()
         case '1': if (stickCount > 0) { itemInHand = 't'; } break;
         case '2': if (woodCount > 0) { itemInHand = 'T'; } break;
         case '3': if (stoneCount > 0) { itemInHand = 'S'; } break;
+        case '4': if (ironCount > 0) { itemInHand = 'I'; } break;
+        case '5': if (diamondCount > 0) { itemInHand = 'D'; } break;
+        default: itemInHand = ' '; break;
     }
 }
 
@@ -168,8 +177,13 @@ void ConsoleGame::openInventory()
     cout << "1. "; if (stickCount > 0) { cout << "Stick - " << stickCount; } cout << endl;
     cout << "2. "; if (woodCount > 0) { cout << "Wood - " << woodCount; } cout << endl;
     cout << "3. "; if (stoneCount > 0) { cout << "Stone - " << stoneCount; } cout << endl;
-    cout << "4. "; if (woodenPickaxeAvailable) { cout << "Wooden Pickaxe - available"; } cout << endl;
-    cout << "5. "; if (stonePickaxeAvailable) { cout << "Stone Pickaxe - available"; } cout << endl;
+    cout << "4. "; if (ironCount > 0) { cout << "Iron - " << ironCount; } cout << endl;
+    cout << "5. "; if (diamondCount > 0) { cout << "Diamond - " << diamondCount; } cout << endl;
+
+    cout << "6. "; if (woodenPickaxeAvailable) { cout << "Wooden Pickaxe - available"; } cout << endl;
+    cout << "7. "; if (stonePickaxeAvailable) { cout << "Stone Pickaxe - available"; } cout << endl;
+    cout << "8. "; if (ironPickaxeAvailable) { cout << "Iron Pickaxe - available"; } cout << endl;
+    cout << "9. "; if (diamondSuperLegendaryMegaSwordAvailable) { cout << "Super Legendary Mega Sword - available"; } cout << endl;
 
     cout << endl << "Y - put an item in hand ? >";
     if (_getch() == 'y') {
@@ -185,16 +199,16 @@ void ConsoleGame::openCraftMenu()
 {
     cout << "CRAFT MENU" << endl
          << "Choose, what do you want ot craft:" << endl << endl;
-    if (stickCount >= 12 && woodCount >= 20 && woodenPickaxeAvailable == false)
+    if (stickCount >= 6 && woodCount >= 20 && woodenPickaxeAvailable == false)
         cout << "1. Wooden pickaxe | Cost: 12 stick, 20 wood" << endl;
 
-    if (stickCount >= 12 && stoneCount >= 20 && stonePickaxeAvailable == false)
+    if (stickCount >= 6 && stoneCount >= 20 && stonePickaxeAvailable == false)
         cout << "2. Stone pickaxe | Cost: 12 stick, 20 stone" << endl;
 
     cout << ">";
     switch (_getch()) {
-        case '1': stickCount -= 12; woodCount -= 20; woodenPickaxeAvailable = true; break;
-        case '2': stickCount -= 12; stoneCount -= 20; stonePickaxeAvailable = true; break;
+        case '1': stickCount -= 6; woodCount -= 20; woodenPickaxeAvailable = true; break;
+        case '2': stickCount -= 6; stoneCount -= 20; stonePickaxeAvailable = true; break;
     }
     system("cls");
 }
