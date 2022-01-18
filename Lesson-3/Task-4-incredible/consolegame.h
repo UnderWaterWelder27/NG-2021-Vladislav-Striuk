@@ -22,11 +22,11 @@ public:
     void changeWorld();
 
     void playerPosition(char (*playerWorldArray)[WORLD_SIZE_X]);
-    void playerKeyAction(char (*worldArray)[WORLD_SIZE_X]);
+    void playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
     bool takeStepOportunity(char nextCell);
 
-    void resourceMining();
-    void resourcePlacing(char availableItem);
+    void resourceMining(char (*worldArray)[WORLD_SIZE_X]);
+    void resourcePlacing(char availableItem, char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
     void placeItemInHand();
 
     void openInventory();
@@ -45,9 +45,13 @@ protected:
     int stickCount;
     int woodCount;
     int stoneCount;
+    int ironCount;
+    int diamondCount;
 
     bool woodenPickaxeAvailable;
     bool stonePickaxeAvailable;
+    bool ironPickaxeAvailable;
+    bool diamondSuperLegendaryMegaSwordAvailable;
 
     char itemInHand;
 };

@@ -17,9 +17,13 @@ ConsoleGame::ConsoleGame()
     stickCount = 0;
     woodCount = 0;
     stoneCount = 0;
+    ironCount = 0;
+    diamondCount = 0;
 
     woodenPickaxeAvailable = false;
     stonePickaxeAvailable = false;
+    ironPickaxeAvailable = false;
+    diamondSuperLegendaryMegaSwordAvailable = false;
 
     itemInHand = ' ';
 }
@@ -91,7 +95,7 @@ void ConsoleGame::playerPosition(char (*playerWorldArray)[WORLD_SIZE_X])
     }
 }
 
-void ConsoleGame::playerKeyAction(char (*worldArray)[WORLD_SIZE_X])
+void ConsoleGame::playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X])
 {
     cout << ">";
     playerActionInput = _getch();
@@ -101,8 +105,8 @@ void ConsoleGame::playerKeyAction(char (*worldArray)[WORLD_SIZE_X])
         case 'd': if (takeStepOportunity(worldArray[playerPosY][playerPosX+1])) { playerPosX++; } break;
         case 'a': if (takeStepOportunity(worldArray[playerPosY][playerPosX-1])) { playerPosX--; } break;
 
-        case 'e': resourceMining(); changeWorld(); break;
-        case 'q': resourcePlacing(itemInHand); break;
+        case 'e': resourceMining(worldArray); changeWorld(); break;
+        case 'q': resourcePlacing(itemInHand, worldArray, playerWorldArray); break;
         case 'm': showGameManual(); break;
         case 'i': openInventory(); break;
         case 'c': openCraftMenu(); break;
@@ -118,16 +122,16 @@ bool ConsoleGame::takeStepOportunity(char nextCell)
     }
 }
 
-void ConsoleGame::resourceMining()
+void ConsoleGame::resourceMining(char (*worldArray)[WORLD_SIZE_X])
 {
     for (int y = playerPosY - 1; y <= playerPosY + 1; y++) {
         for (int x = playerPosX - 1; x <= playerPosX + 1; x++) {
             if (y < WORLD_SIZE_Y && x < WORLD_SIZE_X && y >= 0 && x >= 0) {
-                switch (playerSavannahMap[y][x]) {
-                    case 'T': woodCount += 2; savannahMap[y][x] = 't'; break;
-                    case 't': stickCount += 1; savannahMap[y][x] = ' '; break;
-                    case 'S': if (woodenPickaxeAvailable) { stoneCount += 2; savannahMap[y][x] = 's'; } break;
-                    case 's': if (woodenPickaxeAvailable) { stoneCount += 1; savannahMap[y][x] = ' '; } break;
+                switch (worldArray[y][x]) {
+                    case 'T': woodCount += 2; worldArray[y][x] = 't'; break;
+                    case 't': stickCount += 1; worldArray[y][x] = ' '; break;
+                    case 'S': if (woodenPickaxeAvailable) { stoneCount += 2; worldArray[y][x] = 's'; } break;
+                    case 's': if (woodenPickaxeAvailable) { stoneCount += 1; worldArray[y][x] = ' '; } break;
                 }
             }
         }
@@ -135,7 +139,7 @@ void ConsoleGame::resourceMining()
     system("cls");
 }
 
-void ConsoleGame::resourcePlacing(char availableItem)
+void ConsoleGame::resourcePlacing(char availableItem, char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X])
 {
     if (availableItem == ' ') { return; }
 
@@ -145,8 +149,8 @@ void ConsoleGame::resourcePlacing(char availableItem)
         case 'S': if (stoneCount == 0) { return; }; stoneCount--; break;
     }
 
-    savannahMap[playerPosY][playerPosX] = availableItem;
-    playerSavannahMap[playerPosY][playerPosX] = savannahMap[playerPosY][playerPosX];
+    worldArray[playerPosY][playerPosX] = availableItem;
+    playerWorldArray[playerPosY][playerPosX] = worldArray[playerPosY][playerPosX];
 }
 
 void ConsoleGame::placeItemInHand()
@@ -203,7 +207,7 @@ void ConsoleGame::showGameManual()
          << "w, a, s, d - movement" << endl
          << "m - game manual" << endl
          << "i - player inventory" << endl
-         << "e - to mine" << endl
+         << "e - to mine / to enter the underground level" << endl
          << "c - to craft" << endl
          << "q - to place item" << endl;
     _getch(); system("cls");
