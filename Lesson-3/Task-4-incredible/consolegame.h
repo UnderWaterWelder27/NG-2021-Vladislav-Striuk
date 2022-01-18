@@ -27,8 +27,10 @@ protected:
     static const int WORLD_SIZE_X = 100;
     static const int WORLD_SIZE_Y = 20;
 
-    char generalMap [WORLD_SIZE_Y][WORLD_SIZE_X];                       // main map
-    char playerMap [WORLD_SIZE_Y][WORLD_SIZE_X];                        // visible map
+    char generalMap [WORLD_SIZE_Y][WORLD_SIZE_X];                           // main map
+    char caveMap [WORLD_SIZE_Y][WORLD_SIZE_X];                              // main map
+    char playerGeneralMap [WORLD_SIZE_Y][WORLD_SIZE_X];                     // visible general map
+    char playerCaveMap [WORLD_SIZE_Y][WORLD_SIZE_X];                       // visible general map
 
     char playerActionInput;
     int playerPosX;

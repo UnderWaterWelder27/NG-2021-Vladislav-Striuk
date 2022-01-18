@@ -29,7 +29,12 @@ void ConsoleGame::worldGeneration()
     for (int y = 0; y < WORLD_SIZE_Y; y++) {
         for (int x = 0; x < WORLD_SIZE_X; x++) {
             if (y == WORLD_SIZE_Y - 1 || x == WORLD_SIZE_X - 1 || y == 0 || x == 0) {
-                generalMap[y][x] = '/';                                     //inaccessible frame
+                generalMap[y][x] = '/';
+                if (y == WORLD_SIZE_Y - 1 && x == (WORLD_SIZE_X - 1)/2) {
+                    generalMap[y][x] = 'O';
+                }
+                                                                            //inaccessible frame
+                caveMap[y][x] = '/';
             }
             else {
                 switch(rand()%23) {
@@ -39,8 +44,17 @@ void ConsoleGame::worldGeneration()
                 case 4:  generalMap[y][x] = 's'; break;                     //small stones
                 default: generalMap[y][x] = ' ';                            //empty field
                 }
+
+                switch(rand()%26) {
+                case 1:  caveMap[y][x] = 'I'; break;                        //iron ore
+                case 2:  caveMap[y][x] = 'i'; break;                        //small iron ore
+                case 3:  caveMap[y][x] = 'D'; break;                        //diamond ore
+                case 4:  caveMap[y][x] = 'd'; break;                        //small diamond ore
+                default: caveMap[y][x] = ' ';                               //empty field
+                }
             }
-            playerMap[y][x] = '*';                                          //map fog
+            playerGeneralMap[y][x] = '*';                                          //map fog
+            playerCaveMap[y][x] = '*';
         }
     }
 }
@@ -50,7 +64,8 @@ void ConsoleGame::showUndiscoveredWorld()
     for (int y = playerPosY - 2; y <= playerPosY + 2; y++) {
         for (int x = playerPosX - 2; x <= playerPosX + 2; x++) {
             if (y < WORLD_SIZE_Y && x < WORLD_SIZE_X && y >= 0 && x >= 0) {
-                playerMap[y][x] = generalMap[y][x];
+                playerGeneralMap[y][x] = generalMap[y][x];
+                playerCaveMap[y][x] = caveMap[y][x];
             }
         }
     }
@@ -65,7 +80,7 @@ void ConsoleGame::playerPosition()
                 cout << "@";
             }
             else {
-                cout << playerMap[y][x];
+                cout << playerGeneralMap[y][x];
             }
         } cout << endl;
     }
@@ -76,10 +91,10 @@ void ConsoleGame::playerKeyAction()
     cout << ">";
     playerActionInput = _getch();
     switch(playerActionInput) {
-        case 'w': if (generalMap[playerPosY-1][playerPosX] == ' ') playerPosY--; break;             //movement to up
-        case 's': if (generalMap[playerPosY+1][playerPosX] == ' ') playerPosY++; break;             //movement to down
-        case 'd': if (generalMap[playerPosY][playerPosX+1] == ' ') playerPosX++; break;             //movement to right
-        case 'a': if (generalMap[playerPosY][playerPosX-1] == ' ') playerPosX--; break;             //movement to left
+        case 'w': if (generalMap[playerPosY-1][playerPosX] == ' ' || generalMap[playerPosY-1][playerPosX] == 'O') { playerPosY--; } break;
+        case 's': if (generalMap[playerPosY+1][playerPosX] == ' ' || generalMap[playerPosY+1][playerPosX] == 'O') { playerPosY++; } break;
+        case 'd': if (generalMap[playerPosY][playerPosX+1] == ' ' || generalMap[playerPosY][playerPosX+1] == 'O') { playerPosX++; } break;
+        case 'a': if (generalMap[playerPosY][playerPosX-1] == ' ' || generalMap[playerPosY][playerPosX-1] == 'O') { playerPosX--; } break;
 
         case 'e': resourceMining(); break;
         case 'q': resourcePlacing(itemInHand); break;
@@ -94,7 +109,7 @@ void ConsoleGame::resourceMining()
     for (int y = playerPosY - 1; y <= playerPosY + 1; y++) {
         for (int x = playerPosX - 1; x <= playerPosX + 1; x++) {
             if (y < WORLD_SIZE_Y && x < WORLD_SIZE_X && y >= 0 && x >= 0) {
-                switch (playerMap[y][x]) {
+                switch (playerGeneralMap[y][x]) {
                     case 'T': woodCount += 2; generalMap[y][x] = 't'; break;
                     case 't': stickCount += 1; generalMap[y][x] = ' '; break;
                     case 'S': if (woodenPickaxeAvailable) { stoneCount += 2; generalMap[y][x] = 's'; } break;
@@ -117,7 +132,7 @@ void ConsoleGame::resourcePlacing(char availableItem)
     }
 
     generalMap[playerPosY][playerPosX] = availableItem;
-    playerMap[playerPosY][playerPosX] = generalMap[playerPosY][playerPosX];
+    playerGeneralMap[playerPosY][playerPosX] = generalMap[playerPosY][playerPosX];
 }
 
 void ConsoleGame::placeItemInHand()
