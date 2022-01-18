@@ -10,17 +10,18 @@ public:
 
     static const int WORLD_SIZE_X = 100;
     static const int WORLD_SIZE_Y = 20;
+    char currentWorld;
 
-    char savannahWorld [WORLD_SIZE_Y][WORLD_SIZE_X];                           // main map
+    char savannahMap [WORLD_SIZE_Y][WORLD_SIZE_X];                           // main map
     char playerSavannahMap [WORLD_SIZE_Y][WORLD_SIZE_X];                     // visible general map
-    char caveWorld [WORLD_SIZE_Y][WORLD_SIZE_X];
-    char playerCaveWorld [WORLD_SIZE_Y][WORLD_SIZE_X];
+    char caveMap [WORLD_SIZE_Y][WORLD_SIZE_X];
+    char playerCaveMap [WORLD_SIZE_Y][WORLD_SIZE_X];
 
-    void worldGeneration();
-    void showUndiscoveredWorld();
-    char changeWorld();
+    void worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X], char o1, char o2, char o3, char o4);
+    void showUndiscoveredWorld(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
+    void changeWorld();
 
-    void playerPosition();
+    void playerPosition(char (*playerWorldArray)[WORLD_SIZE_X]);
     void playerKeyAction(char (*worldArray)[WORLD_SIZE_X]);
     bool takeStepOportunity(char nextCell);
 
@@ -33,11 +34,9 @@ public:
     void showGameManual();
     void closeTab();
 
-    char *getSavannahWorld() { return *savannahWorld;}
+    char *getSavannahWorld() { return *savannahMap;}
 
 protected:
-
-    char currentWorld;
 
     char playerActionInput;
     int playerPosX;
