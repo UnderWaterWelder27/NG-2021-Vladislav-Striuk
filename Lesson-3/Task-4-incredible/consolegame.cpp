@@ -13,9 +13,11 @@ ConsoleGame::ConsoleGame()
     playerPosX = WORLD_SIZE_X / 2;
     playerPosY = WORLD_SIZE_Y / 2;
 
-    itemStick = 0;
-    itemWood = 0;
-    itemStone = 0;
+    stickCount = 0;
+    woodCount = 0;
+    stoneCount = 0;
+
+    woodenPickaxeAvailable = false;
 
     itemInHand = ' ';
 }
@@ -73,16 +75,16 @@ void ConsoleGame::playerKeyAction()
     cout << ">";
     playerActionInput = _getch();
     switch(playerActionInput) {
-    case 'w': if (generalMap[playerPosY-1][playerPosX] == ' ') playerPosY--; break;             //movement to up
-    case 's': if (generalMap[playerPosY+1][playerPosX] == ' ') playerPosY++; break;             //movement to down
-    case 'd': if (generalMap[playerPosY][playerPosX+1] == ' ') playerPosX++; break;             //movement to right
-    case 'a': if (generalMap[playerPosY][playerPosX-1] == ' ') playerPosX--; break;             //movement to left
+        case 'w': if (generalMap[playerPosY-1][playerPosX] == ' ') playerPosY--; break;             //movement to up
+        case 's': if (generalMap[playerPosY+1][playerPosX] == ' ') playerPosY++; break;             //movement to down
+        case 'd': if (generalMap[playerPosY][playerPosX+1] == ' ') playerPosX++; break;             //movement to right
+        case 'a': if (generalMap[playerPosY][playerPosX-1] == ' ') playerPosX--; break;             //movement to left
 
-    case 'e': resourceMining(); break;
-    case 'q': resourcePlacing(itemInHand); break;
-    case 'm': showGameManual(); break;
-    case 'i': openInventory(); break;
-    case 'c': openCraftMenu(); break;
+        case 'e': resourceMining(); break;
+        case 'q': resourcePlacing(itemInHand); break;
+        case 'm': showGameManual(); break;
+        case 'i': openInventory(); break;
+        case 'c': openCraftMenu(); break;
     }
 }
 
@@ -92,10 +94,10 @@ void ConsoleGame::resourceMining()
         for (int x = playerPosX - 1; x <= playerPosX + 1; x++) {
             if (y < WORLD_SIZE_Y && x < WORLD_SIZE_X && y >= 0 && x >= 0) {
                 switch (playerMap[y][x]) {
-                    case 't': itemStick++; generalMap[y][x] = ' '; break;
-                    case 'T': itemWood++; generalMap[y][x] = 't'; break;
-                    case 'S': itemStone += 4; generalMap[y][x] = 's'; break;
-                    case 's': itemStone += 2; generalMap[y][x] = ' '; break;
+                    case 'T': woodCount += 2; generalMap[y][x] = 't'; break;
+                    case 't': stickCount += 1; generalMap[y][x] = ' '; break;
+                    case 'S': stoneCount += 2; generalMap[y][x] = 's'; break;
+                    case 's': stoneCount += 1; generalMap[y][x] = ' '; break;
                 }
             }
         }
@@ -105,8 +107,12 @@ void ConsoleGame::resourceMining()
 
 void ConsoleGame::resourcePlacing(char availableItem)
 {
-    if (availableItem == ' ') {
-        return;
+    if (availableItem == ' ') { return; }
+
+    switch (availableItem) {
+        case 't': if (stickCount == 0) { return; } stickCount--; break;
+        case 'T': if (woodCount == 0) { return; }; woodCount--; break;
+        case 'S': if (stoneCount == 0) { return; }; stoneCount--; break;
     }
 
     generalMap[playerPosY][playerPosX] = availableItem;
@@ -116,20 +122,21 @@ void ConsoleGame::resourcePlacing(char availableItem)
 void ConsoleGame::placeItemInHand()
 {
     switch (_getch()) {
-        case 1: if (itemStick > 0) itemInHand = 't'; break;
-        case 2: if (itemWood > 0) itemInHand = 'T'; break;
-        case 3: if (itemStone > 0) itemInHand = 'S'; break;
+        case '1': if (stickCount > 0) { itemInHand = 't'; } break;
+        case '2': if (woodCount > 0) { itemInHand = 'T'; } break;
+        case '3': if (stoneCount > 0) { itemInHand = 'S'; } break;
     }
 }
 
 void ConsoleGame::openInventory()
 {
     cout << "INVENTORY" << endl << endl;
-    if (itemStick > 0) { cout << "1. Stick - " << itemStick << endl; }
-    if (itemWood > 0) { cout << "2. Wood - " << itemWood << endl; }
-    if (itemStone > 0) { cout << "3. Stone - " << itemStone << endl ; }
+    cout << "1. "; if (stickCount > 0) { cout << "Stick - " << stickCount; } cout << endl;
+    cout << "2. "; if (woodCount > 0) { cout << "Wood - " << woodCount; } cout << endl;
+    cout << "3. "; if (stoneCount > 0) { cout << "Stone - " << stoneCount; } cout << endl;
+    cout << "4. "; if (woodenPickaxeAvailable) { cout << "Wooden Pickaxe - available" << endl;}
 
-    cout << "Y - put an item in hand";
+    cout << endl << "Y - put an item in hand ? >";
     if (_getch() == 'y') {
         cout << endl << "Choose item: ";
         placeItemInHand();
@@ -143,10 +150,14 @@ void ConsoleGame::openCraftMenu()
 {
     cout << "CRAFT MENU" << endl
          << "Choose, what do you want ot craft:" << endl << endl;
-    if (itemStick >= 6 && itemWood >= 4) {
+    if (stickCount >= 6 && woodCount >= 4) {
         cout << "1. Wooden pickaxe | Cost: 6 stick, 4 wood" << endl;
     }
-    closeTab();
+    cout << ">";
+    switch (_getch()) {
+        case '1': woodenPickaxeAvailable = true; break;
+    }
+    system("cls");
 }
 
 void ConsoleGame::showGameManual()
@@ -160,10 +171,5 @@ void ConsoleGame::showGameManual()
          << "e - to mine" << endl
          << "c - to craft" << endl
          << "q - to place item" << endl;
-    closeTab();
-}
-
-void ConsoleGame::closeTab()
-{
     _getch(); system("cls");
 }

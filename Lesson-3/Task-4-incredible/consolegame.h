@@ -34,9 +34,11 @@ protected:
     int playerPosX;
     int playerPosY;
 
-    int itemStick;
-    int itemWood;
-    int itemStone;
+    int stickCount;
+    int woodCount;
+    int stoneCount;
+
+    bool woodenPickaxeAvailable;
 
     char itemInHand;
 };
