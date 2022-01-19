@@ -12,7 +12,7 @@ int main()
     mainGame.enemyRandomizeStarterPosition();
 
 
-    while (true) {
+    while (mainGame.getCurrentWorld() != '0') {
         while (mainGame.getCurrentWorld() == '1') {
             mainGame.showUndiscoveredWorld(mainGame.savannahMap, mainGame.playerSavannahMap);
             mainGame.playerPosition(mainGame.playerSavannahMap);

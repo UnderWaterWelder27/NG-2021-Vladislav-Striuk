@@ -119,10 +119,9 @@ bool ConsoleGame::takeStepOportunity(char nextCell)
     switch (nextCell) {
         case ' ': return true; break;
         case 'O': return true; break;
-        case '!': return true; break;
+        case '!': gameOver(); break;
         case '*': return true; break;
-        default: return false; break;
-    }
+    }   return false;
 }
 
 void ConsoleGame::enemyRandomizeStarterPosition()
@@ -139,6 +138,8 @@ bool ConsoleGame::enemyChangePostion(int posY, int posX, int chagePosY, int chan
     if (battleMap[chagePosY][changePosX] != ' ') { return false; }
 
     battleMap[chagePosY][changePosX] = '!';
+    if (battleMap[chagePosY][changePosX] == battleMap[playerPosY][playerPosX]) { gameOver(); }
+
     battleMap[posY][posX] = ' ';
     if (playerBattleMap[chagePosY][changePosX] != '.') {
         playerBattleMap[chagePosY][changePosX] = battleMap[chagePosY][changePosX];
@@ -281,4 +282,12 @@ void ConsoleGame::showGameManual()
          << "1 - move to previous level" << endl
          << "2 - move to next level" << endl;
     _getch(); system("cls");
+}
+
+void ConsoleGame::gameOver()
+{
+    system("cls");
+    currentWorld = '0';
+    cout << "\a B R U H " << endl;
+    _getch();
 }

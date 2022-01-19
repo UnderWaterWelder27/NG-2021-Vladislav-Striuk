@@ -45,6 +45,7 @@ public:
     void openInventory();
     void openCraftMenu();
     void showGameManual();
+    void gameOver();
 
 /// GETTERS
     char getCurrentWorld() { return currentWorld; }
