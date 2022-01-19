@@ -30,6 +30,7 @@ public:
 /// PLAYER ACTIONS
     void playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
     bool takeStepOportunity(char nextCell);
+    void attackEnemy();
 
 /// ENEMIES FUNCTIONS
     void enemyRandomizeStarterPosition();

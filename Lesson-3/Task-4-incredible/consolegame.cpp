@@ -108,6 +108,7 @@ void ConsoleGame::playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playe
         case 'm': showGameManual(); break;
         case 'i': openInventory(); break;
         case 'c': openCraftMenu(); break;
+        case 'r': attackEnemy(); break;
 
         case '1': changeWorld('1'); break;
         case '2': changeWorld('2'); break;
@@ -122,6 +123,11 @@ bool ConsoleGame::takeStepOportunity(char nextCell)
         case '!': gameOver(); break;
         case '*': return true; break;
     }   return false;
+}
+
+void ConsoleGame::attackEnemy()
+{
+
 }
 
 void ConsoleGame::enemyRandomizeStarterPosition()
@@ -152,6 +158,7 @@ void ConsoleGame::enemyRandomMove()
     for (int enemyNum = 0; enemyNum < ENEMIES_AMOUNT; enemyNum++) {
         int Y = enemyPosY[enemyNum];
         int X = enemyPosX[enemyNum];
+
         if (rand()%1 == 0) {
             switch(rand()%4) {
             case 0: if (enemyChangePostion(Y, X, Y - 1, X)) { enemyPosY[enemyNum]--; } break;
@@ -159,6 +166,7 @@ void ConsoleGame::enemyRandomMove()
             case 2: if (enemyChangePostion(Y, X, Y, X - 1)) { enemyPosX[enemyNum]--; } break;
             case 3: if (enemyChangePostion(Y, X, Y, X + 1)) { enemyPosX[enemyNum]++; } break;
             }
+
             if (playerBattleMap[Y][X] != '.') {
                 playerBattleMap[Y][X] = battleMap[Y][X];
             }
@@ -279,6 +287,7 @@ void ConsoleGame::showGameManual()
          << "e - to mine / to enter the underground level" << endl
          << "c - to craft" << endl
          << "q - to place item" << endl
+         << "r - to place item" << endl
          << "1 - move to previous level" << endl
          << "2 - move to next level" << endl;
     _getch(); system("cls");
