@@ -8,6 +8,7 @@ int main()
     mainGame.showGameManual();
     mainGame.worldGeneration(mainGame.savannahMap, mainGame.playerSavannahMap, 'T', 't', 'S', 's');
     mainGame.worldGeneration(mainGame.caveMap, mainGame.playerCaveMap, 'I', 'i', 'D', 'd');
+    mainGame.worldGeneration(mainGame.battleMap, mainGame.playerBattleMap, ' ', ' ', ' ', '!');
 
     while (true) {
         while (mainGame.getCurrentWorld() == '1') {
@@ -19,6 +20,11 @@ int main()
             mainGame.showUndiscoveredWorld(mainGame.caveMap, mainGame.playerCaveMap);
             mainGame.playerPosition(mainGame.playerCaveMap);
             mainGame.playerKeyAction(mainGame.caveMap, mainGame.playerCaveMap);
+        }
+        while (mainGame.getCurrentWorld() == '3') {
+            mainGame.showUndiscoveredWorld(mainGame.battleMap, mainGame.playerBattleMap);
+            mainGame.playerPosition(mainGame.playerBattleMap);
+            mainGame.playerKeyAction(mainGame.battleMap, mainGame.playerBattleMap);
         }
     }
 

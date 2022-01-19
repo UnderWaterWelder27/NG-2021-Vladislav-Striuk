@@ -17,6 +17,8 @@ public:
     char playerSavannahMap [WORLD_SIZE_Y][WORLD_SIZE_X];
     char caveMap [WORLD_SIZE_Y][WORLD_SIZE_X];
     char playerCaveMap [WORLD_SIZE_Y][WORLD_SIZE_X];
+    char battleMap [WORLD_SIZE_Y][WORLD_SIZE_X];
+    char playerBattleMap [WORLD_SIZE_Y][WORLD_SIZE_X];
 
 /// WORLD GENERATION AND OUTPUT
     void worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X], char o1, char o2, char o3, char o4);

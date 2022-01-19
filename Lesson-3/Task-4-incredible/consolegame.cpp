@@ -35,10 +35,7 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
     for (int y = 0; y < WORLD_SIZE_Y; y++) {
         for (int x = 0; x < WORLD_SIZE_X; x++) {
             if (y == WORLD_SIZE_Y - 1 || x == WORLD_SIZE_X - 1 || y == 0 || x == 0) {
-                if (currentWorld == '1' && (y == WORLD_SIZE_Y - 1 && x == (WORLD_SIZE_X - 1)/2)) {
-                    worldArray[y][x] = 'O';
-                }
-                else if (currentWorld == '2' && (y == WORLD_SIZE_Y - 1 && x == (WORLD_SIZE_X - 1)/2)) {
+                if ((y == WORLD_SIZE_Y - 1 && x == (WORLD_SIZE_X - 1)/2)) {
                     worldArray[y][x] = 'O';
                 }
                 else {
@@ -46,7 +43,7 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
                 }
             }
             else {
-                switch(rand()%23) {
+                switch(rand()%30) {
                 case 1:  worldArray[y][x] = o1; break;
                 case 2:  worldArray[y][x] = o2; break;
                 case 3:  worldArray[y][x] = o3; break;
@@ -57,7 +54,7 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
             for (int clearWay = WORLD_SIZE_Y - 2; clearWay > (WORLD_SIZE_Y/3)*2; clearWay--) {
                 worldArray[clearWay][(WORLD_SIZE_X - 1)/2] = ' ';
             }
-            playerWorldArray[y][x] = '*';
+            playerWorldArray[y][x] = '.';
         }
     }
 }
