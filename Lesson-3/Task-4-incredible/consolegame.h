@@ -30,12 +30,14 @@ public:
 /// PLAYER ACTIONS
     void playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
     bool takeStepOportunity(char nextCell);
-    void attackEnemy();
+    void attackEnemy(int enemyID);
+    void defendFromEnemy(int enemyID);
 
 /// ENEMIES FUNCTIONS
     void enemyRandomizeStarterPosition();
-    bool enemyChangePostion(int posY, int posX, int chagePosY, int changePosX);
+    bool enemyChangePostion(int posY, int posX, int chagePosY, int changePosX, int enemyNum);
     void enemyRandomMove();
+    int getEnenmyID();
 
 /// RESOURCE ACTIONS
     void resourceMining(char (*worldArray)[WORLD_SIZE_X]);
@@ -65,6 +67,7 @@ private:
 /// ENEMIES STAT
     int enemyPosX[ENEMIES_AMOUNT];
     int enemyPosY[ENEMIES_AMOUNT];
+    bool enemyDead[ENEMIES_AMOUNT];
 
 /// RESOURCES COUNT
     struct resource {

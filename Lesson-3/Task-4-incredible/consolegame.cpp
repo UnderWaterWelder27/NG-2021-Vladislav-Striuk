@@ -15,6 +15,10 @@ ConsoleGame::ConsoleGame()
     playerActionInput = ' ';
     itemInHand = ' ';
 
+    for (int i = 0; i < ENEMIES_AMOUNT; i++) {
+        enemyDead[i] = false;
+    }
+
     amount.stick = 0;
     amount.wood = 0;
     amount.stone = 0;
@@ -24,8 +28,8 @@ ConsoleGame::ConsoleGame()
     available.woodenPickaxe = false;
     available.stonePickaxe = false;
     available.ironPickaxe = false;
-    available.diamondSword = false;
-    available.diamondShield = false;
+    available.diamondSword = true;
+    available.diamondShield = true;
 }
 
 void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X], char o1, char o2, char o3, char o4)
@@ -108,7 +112,6 @@ void ConsoleGame::playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playe
         case 'm': showGameManual(); break;
         case 'i': openInventory(); break;
         case 'c': openCraftMenu(); break;
-        case 'r': attackEnemy(); break;
 
         case '1': changeWorld('1'); break;
         case '2': changeWorld('2'); break;
@@ -120,14 +123,40 @@ bool ConsoleGame::takeStepOportunity(char nextCell)
     switch (nextCell) {
         case ' ': return true; break;
         case 'O': return true; break;
-        case '!': gameOver(); break;
-        case '*': return true; break;
+        case '!': attackEnemy(getEnenmyID()); break;
     }   return false;
 }
 
-void ConsoleGame::attackEnemy()
+void ConsoleGame::attackEnemy(int enemyID)
 {
+    if (available.diamondSword == false) {
+        switch(rand()%2) {
+        case 0: gameOver(); break;
+        default: enemyDead[enemyID] = true; break;
+        }
+    }
+    else {
+        switch(rand()%149) {
+        case 0: gameOver(); break;
+        default: enemyDead[enemyID] = true; break;
+        }
+    }
+}
 
+void ConsoleGame::defendFromEnemy(int enemyID)
+{
+    if (available.diamondShield == false) {
+        switch(rand()%2) {
+        case 0: gameOver(); break;
+        default: enemyDead[enemyID] = true; battleMap[playerPosY][playerPosX] = ' '; break;
+        }
+    }
+    else {
+        switch(rand()%149) {
+        case 0: gameOver(); break;
+        default: enemyDead[enemyID] = true; battleMap[playerPosY][playerPosX] = ' ';break;
+        }
+    }
 }
 
 void ConsoleGame::enemyRandomizeStarterPosition()
@@ -139,12 +168,12 @@ void ConsoleGame::enemyRandomizeStarterPosition()
     }
 }
 
-bool ConsoleGame::enemyChangePostion(int posY, int posX, int chagePosY, int changePosX)
+bool ConsoleGame::enemyChangePostion(int posY, int posX, int chagePosY, int changePosX, int enemyNum)
 {
     if (battleMap[chagePosY][changePosX] != ' ') { return false; }
 
     battleMap[chagePosY][changePosX] = '!';
-    if (battleMap[chagePosY][changePosX] == battleMap[playerPosY][playerPosX]) { gameOver(); }
+    if (battleMap[chagePosY][changePosX] == battleMap[playerPosY][playerPosX]) { defendFromEnemy(enemyNum); return false; }
 
     battleMap[posY][posX] = ' ';
     if (playerBattleMap[chagePosY][changePosX] != '.') {
@@ -160,18 +189,29 @@ void ConsoleGame::enemyRandomMove()
         int X = enemyPosX[enemyNum];
 
         if (rand()%1 == 0) {
-            switch(rand()%4) {
-            case 0: if (enemyChangePostion(Y, X, Y - 1, X)) { enemyPosY[enemyNum]--; } break;
-            case 1: if (enemyChangePostion(Y, X, Y + 1, X)) { enemyPosY[enemyNum]++; } break;
-            case 2: if (enemyChangePostion(Y, X, Y, X - 1)) { enemyPosX[enemyNum]--; } break;
-            case 3: if (enemyChangePostion(Y, X, Y, X + 1)) { enemyPosX[enemyNum]++; } break;
-            }
-
-            if (playerBattleMap[Y][X] != '.') {
-                playerBattleMap[Y][X] = battleMap[Y][X];
+            if (enemyDead[enemyNum] == false) {
+                switch(rand()%4) {
+                    case 0: if (enemyChangePostion(Y, X, Y - 1, X, enemyNum)) { enemyPosY[enemyNum]--; } break;
+                    case 1: if (enemyChangePostion(Y, X, Y + 1, X, enemyNum)) { enemyPosY[enemyNum]++; } break;
+                    case 2: if (enemyChangePostion(Y, X, Y, X - 1, enemyNum)) { enemyPosX[enemyNum]--; } break;
+                    case 3: if (enemyChangePostion(Y, X, Y, X + 1, enemyNum)) { enemyPosX[enemyNum]++; } break;
+                }
             }
         }
+        if (playerBattleMap[Y][X] != '.') {
+            playerBattleMap[Y][X] = battleMap[Y][X];
+        }
     }
+}
+
+int ConsoleGame::getEnenmyID()
+{
+    for (int enemyNum = 0; enemyNum < ENEMIES_AMOUNT; enemyNum++) {
+        if (enemyPosX[enemyNum] == playerPosX && enemyPosY[enemyNum] == playerPosY) {
+            return enemyNum;
+        }
+    }
+    // HEY, PROBLEM HERE
 }
 
 void ConsoleGame::resourceMining(char (*worldArray)[WORLD_SIZE_X])
@@ -287,7 +327,6 @@ void ConsoleGame::showGameManual()
          << "e - to mine / to enter the underground level" << endl
          << "c - to craft" << endl
          << "q - to place item" << endl
-         << "r - to place item" << endl
          << "1 - move to previous level" << endl
          << "2 - move to next level" << endl;
     _getch(); system("cls");
