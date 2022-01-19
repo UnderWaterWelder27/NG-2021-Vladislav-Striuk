@@ -19,7 +19,7 @@ public:
 
     void worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X], char o1, char o2, char o3, char o4);
     void showUndiscoveredWorld(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
-    void changeWorld();
+    void changeWorld(char changeLevel);
 
     void playerPosition(char (*playerWorldArray)[WORLD_SIZE_X]);
     void playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
@@ -51,7 +51,8 @@ protected:
     bool woodenPickaxeAvailable;
     bool stonePickaxeAvailable;
     bool ironPickaxeAvailable;
-    bool diamondSuperLegendaryMegaSwordAvailable;
+    bool diamondSwordAvailable;
+    bool diamondShieldAvailable;
 
     char itemInHand;
 };
