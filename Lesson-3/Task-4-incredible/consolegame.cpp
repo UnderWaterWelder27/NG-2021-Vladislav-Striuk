@@ -55,6 +55,7 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
                 worldArray[clearWay][(WORLD_SIZE_X - 1)/2] = ' ';
             }
             playerWorldArray[y][x] = '.';
+            playerBattleMap[y][x] = worldArray[y][x];
         }
     }
 }
@@ -148,11 +149,40 @@ void ConsoleGame::enemyRandomMove()
         int X = enemyPosX[enemyNum];
         if (rand()%1 == 0) {
             switch(rand()%4) {
-                case 0: if (battleMap[Y - 1][X] == '.') enemyPosY[enemyNum]--; break;
-                case 1: if (battleMap[Y + 1][X] == '.') enemyPosY[enemyNum]++; break;
-                case 2: if (battleMap[Y][X - 1] == '.') enemyPosX[enemyNum]--; break;
-                case 3: if (battleMap[Y][X + 1] == '.') enemyPosX[enemyNum]++; break;
+            case 0:
+                if (battleMap[Y - 1][X] == ' ') {
+                    battleMap[Y - 1][X] = '!';
+                    battleMap[Y][X] = ' ';
+                    playerBattleMap[Y - 1][X] = battleMap[Y - 1][X];
+                    enemyPosY[enemyNum]--;
+                }
+                break;
+            case 1:
+                if (battleMap[Y + 1][X] == ' ') {
+                    battleMap[Y + 1][X] = '!';
+                    battleMap[Y][X] = ' ';
+                    playerBattleMap[Y + 1][X] = battleMap[Y + 1][X];
+                    enemyPosY[enemyNum]++;
+                }
+                break;
+            case 2:
+                if (battleMap[Y][X - 1] == ' ') {
+                    battleMap[Y][X - 1] = '!';
+                    battleMap[Y][X] = ' ';
+                    playerBattleMap[Y][X - 1] = battleMap[Y][X - 1];
+                    enemyPosX[enemyNum]--;
+                }
+                break;
+            case 3:
+                if (battleMap[Y][X + 1] == ' ') {
+                    battleMap[Y][X + 1] = '!';
+                    battleMap[Y][X] = ' ';
+                    playerBattleMap[Y][X + 1] = battleMap[Y][X + 1];
+                    enemyPosX[enemyNum]++;
+                }
+                break;
             }
+            playerBattleMap[Y][X] = battleMap[Y][X];
         }
     }
 }

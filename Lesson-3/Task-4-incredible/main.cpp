@@ -26,6 +26,7 @@ int main()
             mainGame.showUndiscoveredWorld(mainGame.battleMap, mainGame.playerBattleMap);
             mainGame.playerPosition(mainGame.playerBattleMap);
             mainGame.playerKeyAction(mainGame.battleMap, mainGame.playerBattleMap);
+            mainGame.enemyRandomMove();
         }
     }
 
