@@ -8,7 +8,8 @@ int main()
     mainGame.showGameManual();
     mainGame.worldGeneration(mainGame.savannahMap, mainGame.playerSavannahMap, 'T', 't', 'S', 's');
     mainGame.worldGeneration(mainGame.caveMap, mainGame.playerCaveMap, 'I', 'i', 'D', 'd');
-    mainGame.worldGeneration(mainGame.battleMap, mainGame.playerBattleMap, ' ', ' ', ' ', '!');
+    mainGame.worldGeneration(mainGame.battleMap, mainGame.playerBattleMap, ' ', ' ', ' ', ' ');
+    mainGame.enemyRandomizeStarterPosition();
 
     while (true) {
         while (mainGame.getCurrentWorld() == '1') {

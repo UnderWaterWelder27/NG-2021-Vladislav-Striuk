@@ -11,6 +11,7 @@ public:
 /// WORLD STATS
     static const int WORLD_SIZE_X = 100;
     static const int WORLD_SIZE_Y = 20;
+    static const int ENEMIES_AMOUNT = (WORLD_SIZE_X * WORLD_SIZE_Y) / 100;
 
 /// WORLD MAPS /// (public, because new worlds is created by main function)
     char savannahMap [WORLD_SIZE_Y][WORLD_SIZE_X];
@@ -29,6 +30,10 @@ public:
 /// PLAYER ACTIONS
     void playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
     bool takeStepOportunity(char nextCell);
+
+/// ENEMIES FUNCTIONS
+    void enemyRandomizeStarterPosition();
+    void enemyRandomMove();
 
 /// RESOURCE ACTIONS
     void resourceMining(char (*worldArray)[WORLD_SIZE_X]);
@@ -54,10 +59,14 @@ private:
     char playerActionInput;
     char itemInHand;
 
+/// ENEMIES STAT
+    int enemyPosX[ENEMIES_AMOUNT];
+    int enemyPosY[ENEMIES_AMOUNT];
+
 /// RESOURCES COUNT
     struct resource {
         int stick, wood, stone, iron, diamond;
-    } count;
+    } amount;
 
 /// ITEMS AVAILABLE
     struct items {
