@@ -10,7 +10,6 @@ using namespace std;
 ConsoleGame::ConsoleGame()
 {
     currentWorld = '1';
-
     playerPosX = WORLD_SIZE_X / 2;
     playerPosY = WORLD_SIZE_Y / 2;
     playerActionInput = ' ';
@@ -38,9 +37,7 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
                 if ((y == WORLD_SIZE_Y - 1 && x == (WORLD_SIZE_X - 1)/2)) {
                     worldArray[y][x] = 'O';
                 }
-                else {
-                     worldArray[y][x] = '/';
-                }
+                else { worldArray[y][x] = '/'; }
             }
             else {
                 switch(rand()%30) {
@@ -55,7 +52,6 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
                 worldArray[clearWay][(WORLD_SIZE_X - 1)/2] = ' ';
             }
             playerWorldArray[y][x] = '.';
-            playerBattleMap[y][x] = worldArray[y][x];
         }
     }
 }
@@ -77,14 +73,12 @@ void ConsoleGame::changeWorld(char changeLevel)
     if ((currentWorld == '1' && changeLevel == '1') || (currentWorld == '3' && changeLevel == '2')) {
         return;
     }
-
     else if (changeLevel == '1' && (playerPosY == WORLD_SIZE_Y - 1 && playerPosX == (WORLD_SIZE_X - 1)/2)) {
         currentWorld--;
     }
     else if (changeLevel == '2' && (playerPosY == WORLD_SIZE_Y - 1 && playerPosX == (WORLD_SIZE_X - 1)/2)) {
         currentWorld++;
     }
-
 }
 
 void ConsoleGame::playerPosition(char (*playerWorldArray)[WORLD_SIZE_X])
@@ -94,9 +88,7 @@ void ConsoleGame::playerPosition(char (*playerWorldArray)[WORLD_SIZE_X])
             if (playerPosX == x && playerPosY == y) {
                 cout << "@";
             }
-            else {
-                cout << playerWorldArray[y][x];
-            }
+            else { cout << playerWorldArray[y][x]; }
         } cout << endl;
     }
 }
@@ -136,10 +128,22 @@ bool ConsoleGame::takeStepOportunity(char nextCell)
 void ConsoleGame::enemyRandomizeStarterPosition()
 {
     for (int enemyNum = 0; enemyNum < ENEMIES_AMOUNT; enemyNum++) {
-        enemyPosX[enemyNum] = rand()%(WORLD_SIZE_X - 1) + 1;
-        enemyPosY[enemyNum] = rand()%(WORLD_SIZE_Y - 1) + 1;
-        battleMap[enemyPosY[enemyNum]][enemyPosX[enemyNum]] = '!';
+        enemyPosY[enemyNum] = rand()%(WORLD_SIZE_Y - 2) + 1;
+        enemyPosX[enemyNum] = rand()%(WORLD_SIZE_X - 2) + 1;
+        battleMap[ enemyPosY[enemyNum] ][ enemyPosX[enemyNum] ] = '!';
     }
+}
+
+bool ConsoleGame::enemyChangePostion(int posY, int posX, int chagePosY, int changePosX)
+{
+    if (battleMap[chagePosY][changePosX] != ' ') { return false; }
+
+    battleMap[chagePosY][changePosX] = '!';
+    battleMap[posY][posX] = ' ';
+    if (playerBattleMap[chagePosY][changePosX] != '.') {
+        playerBattleMap[chagePosY][changePosX] = battleMap[chagePosY][changePosX];
+    }
+    return true;
 }
 
 void ConsoleGame::enemyRandomMove()
@@ -149,40 +153,14 @@ void ConsoleGame::enemyRandomMove()
         int X = enemyPosX[enemyNum];
         if (rand()%1 == 0) {
             switch(rand()%4) {
-            case 0:
-                if (battleMap[Y - 1][X] == ' ') {
-                    battleMap[Y - 1][X] = '!';
-                    battleMap[Y][X] = ' ';
-                    playerBattleMap[Y - 1][X] = battleMap[Y - 1][X];
-                    enemyPosY[enemyNum]--;
-                }
-                break;
-            case 1:
-                if (battleMap[Y + 1][X] == ' ') {
-                    battleMap[Y + 1][X] = '!';
-                    battleMap[Y][X] = ' ';
-                    playerBattleMap[Y + 1][X] = battleMap[Y + 1][X];
-                    enemyPosY[enemyNum]++;
-                }
-                break;
-            case 2:
-                if (battleMap[Y][X - 1] == ' ') {
-                    battleMap[Y][X - 1] = '!';
-                    battleMap[Y][X] = ' ';
-                    playerBattleMap[Y][X - 1] = battleMap[Y][X - 1];
-                    enemyPosX[enemyNum]--;
-                }
-                break;
-            case 3:
-                if (battleMap[Y][X + 1] == ' ') {
-                    battleMap[Y][X + 1] = '!';
-                    battleMap[Y][X] = ' ';
-                    playerBattleMap[Y][X + 1] = battleMap[Y][X + 1];
-                    enemyPosX[enemyNum]++;
-                }
-                break;
+            case 0: if (enemyChangePostion(Y, X, Y - 1, X)) { enemyPosY[enemyNum]--; } break;
+            case 1: if (enemyChangePostion(Y, X, Y + 1, X)) { enemyPosY[enemyNum]++; } break;
+            case 2: if (enemyChangePostion(Y, X, Y, X - 1)) { enemyPosX[enemyNum]--; } break;
+            case 3: if (enemyChangePostion(Y, X, Y, X + 1)) { enemyPosX[enemyNum]++; } break;
             }
-            playerBattleMap[Y][X] = battleMap[Y][X];
+            if (playerBattleMap[Y][X] != '.') {
+                playerBattleMap[Y][X] = battleMap[Y][X];
+            }
         }
     }
 }
@@ -256,9 +234,7 @@ void ConsoleGame::openInventory()
         cout << endl << "Choose item: ";
         placeItemInHand();
     }
-    else {
-        system("cls");
-    }
+    else { system("cls"); }
 }
 
 void ConsoleGame::openCraftMenu()
@@ -300,7 +276,6 @@ void ConsoleGame::showGameManual()
          << "m - game manual" << endl
          << "i - player inventory" << endl
          << "e - to mine / to enter the underground level" << endl
-         << "r - to attack" << endl
          << "c - to craft" << endl
          << "q - to place item" << endl
          << "1 - move to previous level" << endl

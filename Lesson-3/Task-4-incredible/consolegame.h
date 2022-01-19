@@ -33,6 +33,7 @@ public:
 
 /// ENEMIES FUNCTIONS
     void enemyRandomizeStarterPosition();
+    bool enemyChangePostion(int posY, int posX, int chagePosY, int changePosX);
     void enemyRandomMove();
 
 /// RESOURCE ACTIONS

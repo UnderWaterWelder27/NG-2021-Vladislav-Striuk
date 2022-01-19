@@ -11,6 +11,7 @@ int main()
     mainGame.worldGeneration(mainGame.battleMap, mainGame.playerBattleMap, ' ', ' ', ' ', ' ');
     mainGame.enemyRandomizeStarterPosition();
 
+
     while (true) {
         while (mainGame.getCurrentWorld() == '1') {
             mainGame.showUndiscoveredWorld(mainGame.savannahMap, mainGame.playerSavannahMap);
