@@ -87,6 +87,7 @@ void ConsoleGame::changeWorld(char changeLevel)
 
 void ConsoleGame::playerPosition(char (*playerWorldArray)[WORLD_SIZE_X])
 {
+    defendFromEnemyOnCell(available.diamondSword);
     for (int y = 0; y < WORLD_SIZE_Y; y++) {
         for (int x = 0; x < WORLD_SIZE_X; x++) {
             if (playerPosX == x && playerPosY == y) {
@@ -123,38 +124,32 @@ bool ConsoleGame::takeStepOportunity(char nextCell)
     switch (nextCell) {
         case ' ': return true; break;
         case 'O': return true; break;
-        case '!': attackEnemy(getEnenmyID()); break;
+        case '!': return true; break;
     }   return false;
 }
 
-void ConsoleGame::attackEnemy(int enemyID)
+void ConsoleGame::defendFromEnemyOnCell(bool artefact)
 {
-    if (available.diamondSword == false) {
-        switch(rand()%2) {
-        case 0: gameOver(); break;
-        default: enemyDead[enemyID] = true; break;
-        }
-    }
-    else {
-        switch(rand()%149) {
-        case 0: gameOver(); break;
-        default: enemyDead[enemyID] = true; break;
-        }
-    }
-}
-
-void ConsoleGame::defendFromEnemy(int enemyID)
-{
-    if (available.diamondShield == false) {
-        switch(rand()%2) {
-        case 0: gameOver(); break;
-        default: enemyDead[enemyID] = true; battleMap[playerPosY][playerPosX] = ' '; break;
-        }
-    }
-    else {
-        switch(rand()%149) {
-        case 0: gameOver(); break;
-        default: enemyDead[enemyID] = true; battleMap[playerPosY][playerPosX] = ' ';break;
+    for (int enemyNum = 0; enemyNum < ENEMIES_AMOUNT; enemyNum++) {
+        if (enemyPosX[enemyNum] != playerPosX || enemyPosY[enemyNum] != playerPosY) { return; }
+        if (enemyPosX[enemyNum] == playerPosX && enemyPosY[enemyNum] == playerPosY) {
+            if (artefact == false) {
+                switch(rand()%2) {
+                case 0: gameOver(); break;
+                default:
+                    enemyDead[enemyNum] = true;
+                    battleMap[playerPosY][playerPosX] = '?';
+                    break;
+                }
+            }
+            else {
+                switch(rand()%149) {
+                case 0: gameOver(); break;
+                default:
+                    enemyDead[enemyNum] = true;
+                    battleMap[playerPosY][playerPosX] = '?';
+                }
+            }
         }
     }
 }
@@ -168,13 +163,14 @@ void ConsoleGame::enemyRandomizeStarterPosition()
     }
 }
 
-bool ConsoleGame::enemyChangePostion(int posY, int posX, int chagePosY, int changePosX, int enemyNum)
+bool ConsoleGame::enemyChangePostion(int posY, int posX, int chagePosY, int changePosX)
 {
     if (battleMap[chagePosY][changePosX] != ' ') { return false; }
-
+    if (battleMap[chagePosY][changePosX] == battleMap[playerPosY][playerPosX]) {
+        defendFromEnemyOnCell(available.diamondShield);
+        return false;
+    }
     battleMap[chagePosY][changePosX] = '!';
-    if (battleMap[chagePosY][changePosX] == battleMap[playerPosY][playerPosX]) { defendFromEnemy(enemyNum); return false; }
-
     battleMap[posY][posX] = ' ';
     if (playerBattleMap[chagePosY][changePosX] != '.') {
         playerBattleMap[chagePosY][changePosX] = battleMap[chagePosY][changePosX];
@@ -191,10 +187,10 @@ void ConsoleGame::enemyRandomMove()
         if (rand()%1 == 0) {
             if (enemyDead[enemyNum] == false) {
                 switch(rand()%4) {
-                    case 0: if (enemyChangePostion(Y, X, Y - 1, X, enemyNum)) { enemyPosY[enemyNum]--; } break;
-                    case 1: if (enemyChangePostion(Y, X, Y + 1, X, enemyNum)) { enemyPosY[enemyNum]++; } break;
-                    case 2: if (enemyChangePostion(Y, X, Y, X - 1, enemyNum)) { enemyPosX[enemyNum]--; } break;
-                    case 3: if (enemyChangePostion(Y, X, Y, X + 1, enemyNum)) { enemyPosX[enemyNum]++; } break;
+                    case 0: if (enemyChangePostion(Y, X, Y - 1, X)) { enemyPosY[enemyNum]--; } break;
+                    case 1: if (enemyChangePostion(Y, X, Y + 1, X)) { enemyPosY[enemyNum]++; } break;
+                    case 2: if (enemyChangePostion(Y, X, Y, X - 1)) { enemyPosX[enemyNum]--; } break;
+                    case 3: if (enemyChangePostion(Y, X, Y, X + 1)) { enemyPosX[enemyNum]++; } break;
                 }
             }
         }
@@ -202,16 +198,6 @@ void ConsoleGame::enemyRandomMove()
             playerBattleMap[Y][X] = battleMap[Y][X];
         }
     }
-}
-
-int ConsoleGame::getEnenmyID()
-{
-    for (int enemyNum = 0; enemyNum < ENEMIES_AMOUNT; enemyNum++) {
-        if (enemyPosX[enemyNum] == playerPosX && enemyPosY[enemyNum] == playerPosY) {
-            return enemyNum;
-        }
-    }
-    // HEY, PROBLEM HERE
 }
 
 void ConsoleGame::resourceMining(char (*worldArray)[WORLD_SIZE_X])

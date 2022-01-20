@@ -30,12 +30,11 @@ public:
 /// PLAYER ACTIONS
     void playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
     bool takeStepOportunity(char nextCell);
-    void attackEnemy(int enemyID);
-    void defendFromEnemy(int enemyID);
+    void defendFromEnemyOnCell(bool artefact);
 
 /// ENEMIES FUNCTIONS
     void enemyRandomizeStarterPosition();
-    bool enemyChangePostion(int posY, int posX, int chagePosY, int changePosX, int enemyNum);
+    bool enemyChangePostion(int posY, int posX, int chagePosY, int changePosX);
     void enemyRandomMove();
     int getEnenmyID();
 
