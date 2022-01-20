@@ -23,6 +23,7 @@ public:
 
 /// WORLD GENERATION AND OUTPUT
     void worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X], char o1, char o2, char o3, char o4);
+    void generateFinalExit();
     void showUndiscoveredWorld(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
     void changeWorld(char changeLevel);
     void playerPosition(char (*playerWorldArray)[WORLD_SIZE_X]);

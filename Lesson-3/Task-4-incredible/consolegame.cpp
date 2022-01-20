@@ -51,9 +51,22 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
             for (int clearWay = WORLD_SIZE_Y - 2; clearWay > (WORLD_SIZE_Y/3)*2; clearWay--) {
                 worldArray[clearWay][(WORLD_SIZE_X - 1)/2] = ' ';
             }
-            playerWorldArray[y][x] = worldArray[y][x];
+            playerWorldArray[y][x] = '.';
         }
     }
+}
+
+void ConsoleGame::generateFinalExit()
+{
+    for (int y = 2; y < WORLD_SIZE_Y - 2; y++) {
+        for (int x = 2; x < WORLD_SIZE_X - 2; x++) {
+            if (rand()%349 == 1) {
+                battleMap[y][x] = 'F';
+                return;
+            }
+        }
+    }
+    battleMap[WORLD_SIZE_Y/2][WORLD_SIZE_X/2] = 'F';
 }
 
 void ConsoleGame::showUndiscoveredWorld(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X])

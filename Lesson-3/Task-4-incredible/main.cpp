@@ -10,7 +10,7 @@ int main()
     mainGame.worldGeneration(mainGame.caveMap, mainGame.playerCaveMap, 'I', 'i', 'D', 'd');
     mainGame.worldGeneration(mainGame.battleMap, mainGame.playerBattleMap, ' ', ' ', ' ', ' ');
     mainGame.enemyRandomizeStarterPosition();
-
+    mainGame.generateFinalExit();
 
     while (mainGame.getCurrentWorld() != '0') {
         while (mainGame.getCurrentWorld() == '1') {
@@ -30,6 +30,5 @@ int main()
             mainGame.enemyRandomMove();
         }
     }
-
     return 0;
 }
