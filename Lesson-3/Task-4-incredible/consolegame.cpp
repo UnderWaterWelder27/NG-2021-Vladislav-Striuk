@@ -15,10 +15,6 @@ ConsoleGame::ConsoleGame()
     playerActionInput = ' ';
     itemInHand = ' ';
 
-    for (int i = 0; i < ENEMIES_AMOUNT; i++) {
-        enemyDead[i] = false;
-    }
-
     amount.stick = 0;
     amount.wood = 0;
     amount.stone = 0;
@@ -55,7 +51,7 @@ void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playe
             for (int clearWay = WORLD_SIZE_Y - 2; clearWay > (WORLD_SIZE_Y/3)*2; clearWay--) {
                 worldArray[clearWay][(WORLD_SIZE_X - 1)/2] = ' ';
             }
-            playerWorldArray[y][x] = '.';
+            playerWorldArray[y][x] = worldArray[y][x];
         }
     }
 }
@@ -87,7 +83,6 @@ void ConsoleGame::changeWorld(char changeLevel)
 
 void ConsoleGame::playerPosition(char (*playerWorldArray)[WORLD_SIZE_X])
 {
-    defendFromEnemyOnCell(available.diamondSword);
     for (int y = 0; y < WORLD_SIZE_Y; y++) {
         for (int x = 0; x < WORLD_SIZE_X; x++) {
             if (playerPosX == x && playerPosY == y) {
@@ -124,34 +119,8 @@ bool ConsoleGame::takeStepOportunity(char nextCell)
     switch (nextCell) {
         case ' ': return true; break;
         case 'O': return true; break;
-        case '!': return true; break;
+        case '#': return true; break;
     }   return false;
-}
-
-void ConsoleGame::defendFromEnemyOnCell(bool artefact)
-{
-    for (int enemyNum = 0; enemyNum < ENEMIES_AMOUNT; enemyNum++) {
-        if (enemyPosX[enemyNum] != playerPosX || enemyPosY[enemyNum] != playerPosY) { return; }
-        if (enemyPosX[enemyNum] == playerPosX && enemyPosY[enemyNum] == playerPosY) {
-            if (artefact == false) {
-                switch(rand()%2) {
-                case 0: gameOver(); break;
-                default:
-                    enemyDead[enemyNum] = true;
-                    battleMap[playerPosY][playerPosX] = '?';
-                    break;
-                }
-            }
-            else {
-                switch(rand()%149) {
-                case 0: gameOver(); break;
-                default:
-                    enemyDead[enemyNum] = true;
-                    battleMap[playerPosY][playerPosX] = '?';
-                }
-            }
-        }
-    }
 }
 
 void ConsoleGame::enemyRandomizeStarterPosition()
@@ -159,22 +128,14 @@ void ConsoleGame::enemyRandomizeStarterPosition()
     for (int enemyNum = 0; enemyNum < ENEMIES_AMOUNT; enemyNum++) {
         enemyPosY[enemyNum] = rand()%(WORLD_SIZE_Y - 2) + 1;
         enemyPosX[enemyNum] = rand()%(WORLD_SIZE_X - 2) + 1;
-        battleMap[ enemyPosY[enemyNum] ][ enemyPosX[enemyNum] ] = '!';
+        battleMap[ enemyPosY[enemyNum] ][ enemyPosX[enemyNum] ] = '#';
     }
 }
 
-bool ConsoleGame::enemyChangePostion(int posY, int posX, int chagePosY, int changePosX)
+bool ConsoleGame::enemyChangePostion(int chagePosY, int changePosX)
 {
     if (battleMap[chagePosY][changePosX] != ' ') { return false; }
-    if (battleMap[chagePosY][changePosX] == battleMap[playerPosY][playerPosX]) {
-        defendFromEnemyOnCell(available.diamondShield);
-        return false;
-    }
-    battleMap[chagePosY][changePosX] = '!';
-    battleMap[posY][posX] = ' ';
-    if (playerBattleMap[chagePosY][changePosX] != '.') {
-        playerBattleMap[chagePosY][changePosX] = battleMap[chagePosY][changePosX];
-    }
+    battleMap[chagePosY][changePosX] = '#';
     return true;
 }
 
@@ -187,10 +148,10 @@ void ConsoleGame::enemyRandomMove()
         if (rand()%1 == 0) {
             if (enemyDead[enemyNum] == false) {
                 switch(rand()%4) {
-                    case 0: if (enemyChangePostion(Y, X, Y - 1, X)) { enemyPosY[enemyNum]--; } break;
-                    case 1: if (enemyChangePostion(Y, X, Y + 1, X)) { enemyPosY[enemyNum]++; } break;
-                    case 2: if (enemyChangePostion(Y, X, Y, X - 1)) { enemyPosX[enemyNum]--; } break;
-                    case 3: if (enemyChangePostion(Y, X, Y, X + 1)) { enemyPosX[enemyNum]++; } break;
+                    case 0: if (enemyChangePostion(Y - 1, X)) { enemyPosY[enemyNum]--; } break;
+                    case 1: if (enemyChangePostion(Y + 1, X)) { enemyPosY[enemyNum]++; } break;
+                    case 2: if (enemyChangePostion(Y, X - 1)) { enemyPosX[enemyNum]--; } break;
+                    case 3: if (enemyChangePostion(Y, X + 1)) { enemyPosX[enemyNum]++; } break;
                 }
             }
         }
