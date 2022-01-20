@@ -30,6 +30,7 @@ public:
 /// PLAYER ACTIONS
     void playerKeyAction(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X]);
     bool takeStepOportunity(char nextCell);
+    bool stepOnEnemy();
 
 /// ENEMIES FUNCTIONS
     void enemyRandomizeStarterPosition();
@@ -46,6 +47,7 @@ public:
     void openCraftMenu();
     void showGameManual();
     void gameOver();
+    void gameComplete();
 
 /// GETTERS
     char getCurrentWorld() { return currentWorld; }
@@ -64,7 +66,6 @@ private:
 /// ENEMIES STAT
     int enemyPosX[ENEMIES_AMOUNT];
     int enemyPosY[ENEMIES_AMOUNT];
-    bool enemyDead[ENEMIES_AMOUNT];
 
 /// RESOURCES COUNT
     struct resource {

@@ -24,8 +24,8 @@ ConsoleGame::ConsoleGame()
     available.woodenPickaxe = false;
     available.stonePickaxe = false;
     available.ironPickaxe = false;
-    available.diamondSword = true;
-    available.diamondShield = true;
+    available.diamondSword = false;
+    available.diamondShield = false;
 }
 
 void ConsoleGame::worldGeneration(char (*worldArray)[WORLD_SIZE_X], char (*playerWorldArray)[WORLD_SIZE_X], char o1, char o2, char o3, char o4)
@@ -119,8 +119,22 @@ bool ConsoleGame::takeStepOportunity(char nextCell)
     switch (nextCell) {
         case ' ': return true; break;
         case 'O': return true; break;
-        case '#': return true; break;
+        case '#': return stepOnEnemy(); break;
+        case 'F': gameComplete(); break;
     }   return false;
+}
+
+bool ConsoleGame::stepOnEnemy()
+{
+    int randomChance = 0;
+    if (available.diamondShield && available.diamondSword) { randomChance = 15; }
+    else if (available.diamondShield || available.diamondSword) { randomChance = 7; }
+    else { randomChance = 1; }
+
+    switch (rand()%randomChance) {
+    case 0: gameOver(); return false; break;
+    default: return true; break;
+    }
 }
 
 void ConsoleGame::enemyRandomizeStarterPosition()
@@ -146,13 +160,11 @@ void ConsoleGame::enemyRandomMove()
         int X = enemyPosX[enemyNum];
 
         if (rand()%1 == 0) {
-            if (enemyDead[enemyNum] == false) {
-                switch(rand()%4) {
-                    case 0: if (enemyChangePostion(Y - 1, X)) { enemyPosY[enemyNum]--; } break;
-                    case 1: if (enemyChangePostion(Y + 1, X)) { enemyPosY[enemyNum]++; } break;
-                    case 2: if (enemyChangePostion(Y, X - 1)) { enemyPosX[enemyNum]--; } break;
-                    case 3: if (enemyChangePostion(Y, X + 1)) { enemyPosX[enemyNum]++; } break;
-                }
+            switch(rand()%4) {
+            case 0: if (enemyChangePostion(Y - 1, X)) { enemyPosY[enemyNum]--; } break;
+            case 1: if (enemyChangePostion(Y + 1, X)) { enemyPosY[enemyNum]++; } break;
+            case 2: if (enemyChangePostion(Y, X - 1)) { enemyPosX[enemyNum]--; } break;
+            case 3: if (enemyChangePostion(Y, X + 1)) { enemyPosX[enemyNum]++; } break;
             }
         }
         if (playerBattleMap[Y][X] != '.') {
@@ -284,5 +296,14 @@ void ConsoleGame::gameOver()
     system("cls");
     currentWorld = '0';
     cout << "\a B R U H " << endl;
+    _getch();
+}
+
+void ConsoleGame::gameComplete()
+{
+    system("cls");
+    currentWorld = '0';
+    cout << "\a F I N A L L Y ! " << endl
+         << "You can close this tab forever)" << endl;
     _getch();
 }
